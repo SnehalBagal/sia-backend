@@ -29,7 +29,7 @@ export default function Employees() {
     try {
 
       const res = await axios.get(
-        "http://192.168.0.105:8000/employees"
+        "import.meta.env.VITE_API_URL/employees"
       );
 
       setEmployees(res.data);
@@ -48,7 +48,7 @@ export default function Employees() {
       const token = localStorage.getItem("token");
 
 await axios.post(
-  "http://192.168.0.105:8000/employees",
+  "import.meta.env.VITE_API_URL/employees",
   formData,
   {
     headers: {
@@ -74,7 +74,7 @@ await axios.post(
     const token = localStorage.getItem("token");
 
     await axios.put(
-      `http://192.168.0.105:8000/employees/${employeeId}/inactive`,
+      `import.meta.env.VITE_API_URL/employees/${employeeId}/inactive`,
       null,
       {
         headers: {
@@ -106,7 +106,7 @@ const updateEmployee = async () => {
   };
   console.log(dataToSend);
   await axios.put(
-    `http://192.168.0.105:8000/employees/${editingId}`,
+    `import.meta.env.VITE_API_URL/employees/${editingId}`,
     dataToSend,
     {
       headers: {
@@ -131,7 +131,7 @@ const deleteEmployee = async (employeeId) => {
   const token = localStorage.getItem("token");
 
   await axios.delete(
-    `http://192.168.0.105:8000/employees/${employeeId}`,
+    `import.meta.env.VITE_API_URL/employees/${employeeId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`

@@ -20,7 +20,7 @@ export default function Tasks() {
     try {
 
       const res = await axios.get(
-        "http://192.168.0.105:8000/tasks"
+        "import.meta.env.VITE_API_URL/tasks"
       );
 
       setTasks(res.data);
@@ -41,7 +41,7 @@ const fetchComments = async (taskId) => {
   try {
 
     const res = await axios.get(
-      `http://192.168.0.105:8000/task-comments/${taskId}`
+      `import.meta.env.VITE_API_URL/task-comments/${taskId}`
     );
 
     setComments((prev) => ({
@@ -59,7 +59,7 @@ const fetchComments = async (taskId) => {
 const addComment = async (taskId) => {
   try {
     await axios.post(
-      "http://192.168.0.105:8000/add-comment",
+      "import.meta.env.VITE_API_URL/add-comment",
       {
         task_id: taskId,
         comment: newComments[taskId],

@@ -21,7 +21,7 @@ export default function Projects() {
     try {
 
       const res = await axios.get(
-        "http://192.168.0.105:8000/projects"
+        "import.meta.env.VITE_API_URL/projects"
       );
 
       setProjects(res.data);
@@ -38,7 +38,7 @@ export default function Projects() {
     try {
 
       await axios.post(
-        "http://192.168.0.105:8000/create-project",
+        "import.meta.env.VITE_API_URL/create-project",
         {
           project_name: projectName,
           description,

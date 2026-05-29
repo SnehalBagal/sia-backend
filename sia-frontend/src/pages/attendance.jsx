@@ -23,7 +23,7 @@ export default function Attendance() {
       const token = localStorage.getItem("token");
 
 const res = await axios.get(
-  "http://192.168.0.105:8000/attendance",
+  "import.meta.env.VITE_API_URL/attendance",
   {
     headers: {
       Authorization: `Bearer ${token}`
@@ -47,7 +47,7 @@ const res = await axios.get(
     const username = localStorage.getItem("username");
 
     await axios.post(
-      `http://192.168.0.105:8000/login-time/${username}`
+      `import.meta.env.VITE_API_URL/login-time/${username}`
     );
 
     alert("Login time saved");
@@ -70,7 +70,7 @@ const res = await axios.get(
     const username = localStorage.getItem("username");
 
     await axios.put(
-      `http://192.168.0.105:8000/logout-time/${username}`
+      `import.meta.env.VITE_API_URL/logout-time/${username}`
     );
 
     alert("Logout time saved");
@@ -91,7 +91,7 @@ const updateWorkReport = async (attendanceId, workReport) => {
   const token = localStorage.getItem("token");
 
   await axios.put(
-    `http://192.168.0.105:8000/attendance-work/${attendanceId}`,
+    `import.meta.env.VITE_API_URL/attendance-work/${attendanceId}`,
     null,
     {
       params: {

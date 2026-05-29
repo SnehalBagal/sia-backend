@@ -11,7 +11,7 @@ export default function Kanban() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("http://192.168.0.105:8000/tasks");
+      const res = await axios.get("import.meta.env.VITE_API_URL/tasks");
       setTasks(res.data);
     } catch (err) {
       console.log(err);
@@ -23,7 +23,7 @@ export default function Kanban() {
   try {
 
     await axios.put(
-      `http://192.168.0.105:8000/update-task-status/${taskId}`,
+      `import.meta.env.VITE_API_URL/update-task-status/${taskId}`,
       null,
       {
         params: {

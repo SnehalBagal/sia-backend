@@ -10,7 +10,7 @@ export default function SendNotification() {
   const sendNotification = async () => {
     try {
       await axios.post(
-        "http://192.168.0.105:8000/notifications",
+        "import.meta.env.VITE_API_URL/notifications",
         {
           username,
           message,
