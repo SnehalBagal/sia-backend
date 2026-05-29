@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import API from "../api";
 
 export default function Login() {
 
@@ -18,7 +19,7 @@ export default function Login() {
     try {
 
       const res = await axios.post(
-        "http://192.168.0.105:8000/login",
+        "https://sia-backend-production-4dcd.up.railway.app/login",
         {
           username,
           password

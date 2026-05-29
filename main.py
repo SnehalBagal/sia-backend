@@ -644,3 +644,31 @@ def delete_employee(
     db.commit()
 
     return {"message": "Employee deleted successfully"}   
+
+@app.post("/setup-admin")
+def setup_admin(data: EmployeeCreate):
+    db = SessionLocal()
+
+    existing = db.query(Employee).filter(
+        Employee.username == data.username
+    ).first()
+
+    if existing:
+        return {"message": "Admin already exists"}
+
+    employee = Employee(
+        full_name=data.full_name,
+        username=data.username,
+        password=hash_password(data.password),
+        email=data.email,
+        role=data.role,
+        department=data.department,
+        designation=data.designation,
+        joining_date=data.joining_date
+    )
+
+    db.add(employee)
+    db.commit()
+    db.refresh(employee)
+
+    return {"message": "Admin created successfully"}    
