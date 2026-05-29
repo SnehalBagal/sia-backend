@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 MYSQLHOST = "mysql.railway.internal"
-MYSQLPORT = "3306"
+MYSQLPORT = 3306
 MYSQLUSER = "root"
 MYSQLPASSWORD = "PEbUCyqyqXvXCMRiupKpEJfpdtlrFAzv"
 MYSQLDATABASE = "railway"
