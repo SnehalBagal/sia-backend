@@ -242,3 +242,29 @@ def dashboard(
         "employees": employees,
         "projects": projects
     }
+
+
+@app.post("/create-first-admin")
+def create_first_admin(
+    db: Session = Depends(get_db)
+):
+
+    admin = Employee(
+        full_name="Admin",
+        username="admin5",
+        password=hash_password("admin123"),
+        email="admin@kpaindia.co.in",
+        role="admin",
+        department="Management",
+        designation="Administrator",
+        status="Active"
+    )
+
+    db.add(admin)
+    db.commit()
+    db.refresh(admin)
+
+    return {
+        "message": "Admin created",
+        "username": admin.username
+    }
