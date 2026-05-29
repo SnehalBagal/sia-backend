@@ -260,6 +260,28 @@ def create_first_admin(
     db: Session = Depends(get_db)
 ):
 
+    admin = db.query(Employee).filter(
+        Employee.username == "admin5"
+    ).first()
+
+    if admin:
+        admin.role = "admin"
+        admin.status = "Active"
+        admin.password = hash_password("admin123")
+        admin.email = "admin@kpaindia.co.in"
+        admin.department = "Management"
+        admin.designation = "Administrator"
+
+        if not admin.joining_date:
+            admin.joining_date = date.today()
+
+        db.commit()
+
+        return {
+            "message": "Existing admin fixed",
+            "username": "admin5"
+        }
+
     admin = Employee(
         full_name="Admin",
         username="admin5",
@@ -268,6 +290,7 @@ def create_first_admin(
         role="admin",
         department="Management",
         designation="Administrator",
+        joining_date=date.today(),
         status="Active"
     )
 
