@@ -16,6 +16,17 @@ from app.auth import (
     admin_required
 )
 from fastapi.middleware.cors import CORSMiddleware
+from app.database.db import SessionLocal
+def get_db():
+
+    db = SessionLocal()
+
+    try:
+        yield db
+
+    finally:
+        db.close()
+
 
 
 
