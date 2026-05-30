@@ -52,7 +52,7 @@ const fetchComments = async (taskId) => {
   try {
 
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/task-comments/${taskId}"
+      `https://sia-backend-production-4dcd.up.railway.app/task-comments/${taskId}`
     );
 
     setComments((prev) => ({
