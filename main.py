@@ -10,6 +10,8 @@ from app.models.project import Project
 from app.schemas.auth import ProjectCreate
 from app.models.task import Task
 from app.schemas.auth import TaskCreate
+from datetime import datetime
+from app.models.attendance import Attendance
 from app.auth import (
     create_access_token,
     get_current_user,
@@ -302,3 +304,54 @@ def create_first_admin(
         "message": "Admin created",
         "username": admin.username
     }
+
+
+@app.post("/login-time/{username}")
+def login_time(
+    username: str,
+    db: Session = Depends(get_db)
+):
+    attendance = Attendance(
+        username=username
+    )
+
+    db.add(attendance)
+    db.commit()
+    db.refresh(attendance)
+
+    return {
+        "message": "Login time recorded"
+    }
+
+
+@app.put("/logout-time/{username}")
+def logout_time(
+    username: str,
+    db: Session = Depends(get_db)
+):
+    attendance = db.query(Attendance).filter(
+        Attendance.username == username,
+        Attendance.logout_time == None
+    ).order_by(
+        Attendance.id.desc()
+    ).first()
+
+    if not attendance:
+        return {"message": "No active login found"}
+
+    attendance.logout_time = datetime.now()
+
+    db.commit()
+
+    return {
+        "message": "Logout time recorded"
+    }
+
+
+@app.get("/attendance")
+def get_attendance(
+    db: Session = Depends(get_db)
+):
+    records = db.query(Attendance).all()
+
+    return records    
