@@ -340,6 +340,12 @@ def logout_time(
         return {"message": "No active login found"}
 
     attendance.logout_time = datetime.now()
+    if attendance.login_time and attendance.logout_time:
+    diff = attendance.logout_time - attendance.login_time
+    attendance.total_hours = round(
+        diff.total_seconds() / 3600,
+        2
+    )
 
     db.commit()
 
