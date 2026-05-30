@@ -17,31 +17,42 @@ export default function Tasks() {
 
   const fetchTasks = async () => {
 
-    try {
+  try {
 
-      const res = await axios.get(
-        "import.meta.env.VITE_API_URL/tasks"
-      );
+    const token = localStorage.getItem("token");
 
-      setTasks(res.data);
+    const res = await axios.get(
+      "https://sia-backend-production-4dcd.up.railway.app/tasks",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
 
-      res.data.forEach((task) => {
-        fetchComments(task.id);
-      });
+    const taskList = Array.isArray(res.data)
+      ? res.data
+      : [];
 
-    } catch (err) {
+    setTasks(taskList);
 
-      console.log(err);
+    taskList.forEach((task) => {
+      fetchComments(task.id);
+    });
 
-    }
-  };
+  } catch (err) {
+
+    console.log(err);
+
+  }
+};
 
 const fetchComments = async (taskId) => {
 
   try {
 
     const res = await axios.get(
-      `import.meta.env.VITE_API_URL/task-comments/${taskId}`
+      "https://sia-backend-production-4dcd.up.railway.app/task-comments/${taskId}"
     );
 
     setComments((prev) => ({
@@ -59,7 +70,7 @@ const fetchComments = async (taskId) => {
 const addComment = async (taskId) => {
   try {
     await axios.post(
-      "import.meta.env.VITE_API_URL/add-comment",
+      "https://sia-backend-production-4dcd.up.railway.app/add-comment",
       {
         task_id: taskId,
         comment: newComments[taskId],
@@ -172,7 +183,9 @@ const addComment = async (taskId) => {
                 <h3>Comments</h3>
 
                 {
-                  comments[task.id]?.map((comment) => (
+                
+                 Array.isArray(comments[task.id]) &&
+                 comments[task.id].map((comment) => (
 
                    <div
                      key={comment.id}

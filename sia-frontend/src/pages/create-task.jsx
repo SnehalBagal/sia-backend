@@ -12,33 +12,39 @@ export default function CreateTask() {
   const [dueDate, setDueDate] = useState("");
   const [projectName, setProjectName] = useState("");
 
-  const createTask = async () => {
+ const createTask = async () => {
 
-    try {
+  try {
 
-      await axios.post(
-        "import.meta.env.VITE_API_URL/create-task",
-        {
-          title,
-          description,
-          assigned_to: assignedTo,
-          assigned_by: assignedBy,
-          priority,
-          due_date: dueDate,
-          project_name: projectName
+    const token = localStorage.getItem("token");
+
+    await axios.post(
+      "https://sia-backend-production-4dcd.up.railway.app/create-task",
+      {
+        title,
+        description,
+        assigned_to: assignedTo,
+        assigned_by: assignedBy,
+        priority,
+        due_date: dueDate,
+        project_name: projectName
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      }
+    );
 
-      alert("Task Created");
+    alert("Task Created");
 
-    } catch (err) {
+  } catch (err) {
 
-      console.log(err);
+    console.log(err);
 
-      alert("Error creating task");
-    }
-  };
-
+    alert("Error creating task");
+  }
+};
   return (
   <div>
     <Sidebar />

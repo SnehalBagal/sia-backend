@@ -21,7 +21,7 @@ export default function Projects() {
     try {
 
       const res = await axios.get(
-        "import.meta.env.VITE_API_URL/projects"
+        "https://sia-backend-production-4dcd.up.railway.app/projects"
       );
 
       setProjects(res.data);
@@ -38,7 +38,7 @@ export default function Projects() {
     try {
 
       await axios.post(
-        "import.meta.env.VITE_API_URL/create-project",
+        "https://sia-backend-production-4dcd.up.railway.app/create-project",
         {
           project_name: projectName,
           description,

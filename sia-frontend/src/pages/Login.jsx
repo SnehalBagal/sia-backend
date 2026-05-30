@@ -26,6 +26,8 @@ export default function Login() {
         }
       );
 
+      console.log(res.data);
+
       localStorage.setItem(
         "token",
         res.data.access_token

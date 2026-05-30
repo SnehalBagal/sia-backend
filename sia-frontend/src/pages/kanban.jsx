@@ -11,7 +11,7 @@ export default function Kanban() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("import.meta.env.VITE_API_URL/tasks");
+      const res = await axios.get("https://sia-backend-production-4dcd.up.railway.app/tasks");
       setTasks(res.data);
     } catch (err) {
       console.log(err);
@@ -23,7 +23,7 @@ export default function Kanban() {
   try {
 
     await axios.put(
-      `import.meta.env.VITE_API_URL/update-task-status/${taskId}`,
+      "https://sia-backend-production-4dcd.up.railway.app/update-task-status/${taskId}",
       null,
       {
         params: {

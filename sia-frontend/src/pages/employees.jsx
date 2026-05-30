@@ -29,9 +29,13 @@ export default function Employees() {
     try {
 
       const res = await axios.get(
-        "import.meta.env.VITE_API_URL/employees"
+        "https://sia-backend-production-4dcd.up.railway.app/employees"
       );
-
+if (Array.isArray(res.data)) {
+  setEmployees(res.data);
+} else {
+  setEmployees([]);
+}
       setEmployees(res.data);
 
     } catch (err) {
@@ -47,8 +51,8 @@ export default function Employees() {
 
       const token = localStorage.getItem("token");
 
-await axios.post(
-  "import.meta.env.VITE_API_URL/employees",
+     await axios.post(
+  "https://sia-backend-production-4dcd.up.railway.app/employees",
   formData,
   {
     headers: {
@@ -74,7 +78,7 @@ await axios.post(
     const token = localStorage.getItem("token");
 
     await axios.put(
-      `import.meta.env.VITE_API_URL/employees/${employeeId}/inactive`,
+      "https://sia-backend-production-4dcd.up.railway.app/employees/${employeeId}/inactive",
       null,
       {
         headers: {
@@ -106,7 +110,7 @@ const updateEmployee = async () => {
   };
   console.log(dataToSend);
   await axios.put(
-    `import.meta.env.VITE_API_URL/employees/${editingId}`,
+    "https://sia-backend-production-4dcd.up.railway.app/employees/${editingId}",
     dataToSend,
     {
       headers: {
@@ -131,7 +135,7 @@ const deleteEmployee = async (employeeId) => {
   const token = localStorage.getItem("token");
 
   await axios.delete(
-    `import.meta.env.VITE_API_URL/employees/${employeeId}`,
+    "https://sia-backend-production-4dcd.up.railway.app/employees/${employeeId}",
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -298,7 +302,8 @@ const deleteEmployee = async (employeeId) => {
           <tbody>
 
             {
-              employees.map((employee) => (
+  Array.isArray(employees) &&
+  employees.map((employee) => (
 
                 <tr key={employee.id}>
 

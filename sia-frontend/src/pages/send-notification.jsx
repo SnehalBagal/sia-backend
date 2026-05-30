@@ -10,7 +10,7 @@ export default function SendNotification() {
   const sendNotification = async () => {
     try {
       await axios.post(
-        "import.meta.env.VITE_API_URL/notifications",
+        "https://sia-backend-production-4dcd.up.railway.app/notifications ",
         {
           username,
           message,

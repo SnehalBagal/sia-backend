@@ -21,10 +21,14 @@ export default function Dashboard() {
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        "import.meta.env.VITE_API_URL/tasks"
+        "https://sia-backend-production-4dcd.up.railway.app/tasks"
       );
 
-      setTasks(res.data);
+      if (Array.isArray(res.data)) {
+  setTasks(res.data);
+} else {
+  setTasks([]);
+}
 
     } catch (err) {
       console.log(err);
@@ -33,18 +37,23 @@ export default function Dashboard() {
 
   const totalTasks = tasks.length;
 
-  const pendingTasks = tasks.filter(
-    (task) => task.status === "Pending"
-  ).length;
+  const pendingTasks = Array.isArray(tasks)
+  ? tasks.filter(
+      (task) => task.status === "Pending"
+    ).length
+  : 0;
 
-  const progressTasks = tasks.filter(
-    (task) => task.status === "In Progress"
-  ).length;
+const progressTasks = Array.isArray(tasks)
+  ? tasks.filter(
+      (task) => task.status === "In Progress"
+    ).length
+  : 0;
 
-  const completedTasks = tasks.filter(
-    (task) => task.status === "Completed"
-  ).length;
-
+const completedTasks = Array.isArray(tasks)
+  ? tasks.filter(
+      (task) => task.status === "Completed"
+    ).length
+  : 0;
   return (
     <div>
       <Sidebar />

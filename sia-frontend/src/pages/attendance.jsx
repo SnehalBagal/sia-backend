@@ -23,7 +23,7 @@ export default function Attendance() {
       const token = localStorage.getItem("token");
 
 const res = await axios.get(
-  "import.meta.env.VITE_API_URL/attendance",
+  "https://sia-backend-production-4dcd.up.railway.app/attendance",
   {
     headers: {
       Authorization: `Bearer ${token}`
@@ -31,7 +31,11 @@ const res = await axios.get(
   }
 );
 
-      setRecords(res.data);
+      if (Array.isArray(res.data)) {
+  setRecords(res.data);
+} else {
+  setRecords([]);
+}
 
     } catch (err) {
 
@@ -47,7 +51,7 @@ const res = await axios.get(
     const username = localStorage.getItem("username");
 
     await axios.post(
-      `import.meta.env.VITE_API_URL/login-time/${username}`
+      "https://sia-backend-production-4dcd.up.railway.app/login-time/${username}"
     );
 
     alert("Login time saved");
@@ -70,7 +74,7 @@ const res = await axios.get(
     const username = localStorage.getItem("username");
 
     await axios.put(
-      `import.meta.env.VITE_API_URL/logout-time/${username}`
+      "https://sia-backend-production-4dcd.up.railway.app/logout-time/${username}"
     );
 
     alert("Logout time saved");
@@ -91,7 +95,7 @@ const updateWorkReport = async (attendanceId, workReport) => {
   const token = localStorage.getItem("token");
 
   await axios.put(
-    `import.meta.env.VITE_API_URL/attendance-work/${attendanceId}`,
+    "https://sia-backend-production-4dcd.up.railway.app/attendance-work/${attendanceId}",
     null,
     {
       params: {
@@ -107,24 +111,25 @@ const updateWorkReport = async (attendanceId, workReport) => {
 };
 
 
-const filteredRecords = records.filter((record) => {
+const filteredRecords = Array.isArray(records)
+  ? records.filter((record) => {
+      const nameMatch = record.username
+        ?.toLowerCase()
+        .includes(filterName.toLowerCase());
 
-  const nameMatch = record.username
-    ?.toLowerCase()
-    .includes(filterName.toLowerCase());
+      const recordDate = record.work_date;
 
-  const recordDate = record.work_date;
+      const fromMatch = fromDate
+        ? recordDate >= fromDate
+        : true;
 
-  const fromMatch = fromDate
-    ? recordDate >= fromDate
-    : true;
+      const toMatch = toDate
+        ? recordDate <= toDate
+        : true;
 
-  const toMatch = toDate
-    ? recordDate <= toDate
-    : true;
-
-  return nameMatch && fromMatch && toMatch;
-});
+      return nameMatch && fromMatch && toMatch;
+    })
+  : [];
 
 
 
