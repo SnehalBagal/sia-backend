@@ -311,8 +311,10 @@ def login_time(
     username: str,
     db: Session = Depends(get_db)
 ):
+
     attendance = Attendance(
-        username=username
+        username=username,
+        login_time=datetime.now()
     )
 
     db.add(attendance)
@@ -320,7 +322,9 @@ def login_time(
     db.refresh(attendance)
 
     return {
-        "message": "Login time recorded"
+        "message": "Login time recorded",
+        "username": attendance.username,
+        "login_time": attendance.login_time
     }
 
 
