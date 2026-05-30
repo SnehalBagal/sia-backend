@@ -74,7 +74,7 @@ const res = await axios.get(
     const username = localStorage.getItem("username");
 
     await axios.put(
-      "https://sia-backend-production-4dcd.up.railway.app/logout-time/${username}"
+      `https://sia-backend-production-4dcd.up.railway.app/logout-time/${username}`
     );
 
     alert("Logout time saved");
