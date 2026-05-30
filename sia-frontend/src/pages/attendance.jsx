@@ -50,9 +50,15 @@ const res = await axios.get(
 
     const username = localStorage.getItem("username");
 
-    await axios.post(
-      `https://sia-backend-production-4dcd.up.railway.app/login-time/${username}`
-    );
+    console.log("USERNAME =", username);
+
+    const url =
+      "https://sia-backend-production-4dcd.up.railway.app/login-time/" +
+      username;
+
+    console.log(url);
+
+    await axios.post(url);
 
     alert("Login time saved");
 
@@ -63,7 +69,6 @@ const res = await axios.get(
     console.log(err);
 
     alert("Login failed");
-
   }
 };
 
