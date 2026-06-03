@@ -20,6 +20,7 @@ from app.auth import (
 
 from app.database.db import SessionLocal
 from app.database.db import SessionLocal, engine, Base
+from sqlalchemy import Column, Integer, String, Text, DateTime
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
