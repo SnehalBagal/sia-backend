@@ -48,35 +48,7 @@ app.add_middleware(
 def home():
     return {"message": "SIA Running"}
 
-@app.post("/create-employee")
-def create_employee(
-    data: EmployeeCreate,
-    current_user: dict = Depends(admin_required)
-):
-    db: Session = SessionLocal()
 
-    hashed_pw = hash_password(data.password)
-
-    employee = Employee(
-        full_name=data.full_name,
-        username=data.username,
-        password=hashed_pw,
-        email=data.email,
-        role=data.role,
-        department=data.department,
-        designation=data.designation
-    )
-
-    db.add(employee)
-
-    db.commit()
-
-    db.refresh(employee)
-
-    return {
-        "message": "Employee Created Successfully",
-        "employee": employee.username
-    }
 @app.post("/login")
 def login(data: LoginRequest):
 
@@ -392,7 +364,7 @@ def create_employee_new(
         role=data.role,
         department=data.department,
         designation=data.designation,
-        joining_date=data.joining_date,
+        joining_date=getattr(data, "joining_date", None),
         status="Active"
     )
 
