@@ -521,3 +521,16 @@ def get_notifications(
         (Notification.to_user == username) |
         (Notification.from_user == username)
     ).all()
+
+@app.get("/notifications/{username}")
+def get_notifications(
+    username: str,
+    db: Session = Depends(get_db)
+):
+
+    notifications = db.query(Notification).filter(
+        (Notification.to_user == username) |
+        (Notification.from_user == username)
+    ).all()
+
+    return notifications    
