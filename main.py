@@ -376,3 +376,37 @@ def create_employee_new(
         "message": "Employee created successfully",
         "employee_id": employee.id
     }   
+
+ @app.put("/employees/{employee_id}")
+def update_employee(
+    employee_id: int,
+    data: EmployeeCreate,
+    db: Session = Depends(get_db)
+):
+
+    employee = db.query(Employee).filter(
+        Employee.id == employee_id
+    ).first()
+
+    if not employee:
+        return {"message": "Employee not found"}
+
+    employee.full_name = data.full_name
+    employee.username = data.username
+    employee.email = data.email
+    employee.role = data.role
+    employee.department = data.department
+    employee.designation = data.designation
+
+    if hasattr(data, "joining_date"):
+        employee.joining_date = data.joining_date
+
+    if data.password and data.password != "nochange":
+        employee.password = hash_password(data.password)
+
+    db.commit()
+    db.refresh(employee)
+
+    return {
+        "message": "Employee updated successfully"
+    }   
