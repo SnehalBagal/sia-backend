@@ -480,7 +480,7 @@ def get_projects(
     return db.query(Project).all() 
 
 
- class Notification(Base):
+class Notification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, index=True)
