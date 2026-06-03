@@ -525,4 +525,48 @@ def get_notifications(
 ):
     return db.query(Notification).filter(
         Notification.username == username
-    ).all() 
+    ).all()
+
+  class TaskComment(Base):
+    __tablename__ = "task_comments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer)
+    username = Column(String(100))
+    comment = Column(Text)
+    created_at = Column(DateTime, default=datetime.now)
+
+
+Base.metadata.create_all(bind=engine)
+
+@app.post("/add-comment")
+def add_comment(
+    data: dict,
+    db: Session = Depends(get_db)
+):
+
+    comment = TaskComment(
+        task_id=data.get("task_id"),
+        username=data.get("username"),
+        comment=data.get("comment")
+    )
+
+    db.add(comment)
+    db.commit()
+
+    return {
+        "message": "Comment added"
+    }
+
+
+@app.get("/task-comments/{task_id}")
+def get_task_comments(
+    task_id: int,
+    db: Session = Depends(get_db)
+):
+
+    comments = db.query(TaskComment).filter(
+        TaskComment.task_id == task_id
+    ).all()
+
+    return comments
