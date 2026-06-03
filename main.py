@@ -410,3 +410,23 @@ def update_employee(
     return {
         "message": "Employee updated successfully"
     }   
+@app.put("/employees/{employee_id}/inactive")
+def make_employee_inactive(
+    employee_id: int,
+    db: Session = Depends(get_db)
+):
+
+    employee = db.query(Employee).filter(
+        Employee.id == employee_id
+    ).first()
+
+    if not employee:
+        return {"message": "Employee not found"}
+
+    employee.status = "Inactive"
+
+    db.commit()
+
+    return {
+        "message": "Employee marked inactive"
+    }
