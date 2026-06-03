@@ -479,21 +479,45 @@ def get_projects(
 ):
     return db.query(Project).all() 
 
-notifications = []
+
+ class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    from_user = Column(String(100))
+    to_user = Column(String(100))
+    message = Column(Text)
+    created_at = Column(DateTime, default=datetime.now)
+
+Base.metadata.create_all(bind=engine)
+
 
 @app.post("/notifications")
-def create_notification(data: dict):
-    notifications.append(data)
+def create_notification(
+    data: dict,
+    db: Session = Depends(get_db)
+):
+    notification = Notification(
+        from_user=data.get("from_user"),
+        to_user=data.get("to_user"),
+        message=data.get("message")
+    )
+
+    db.add(notification)
+    db.commit()
+    db.refresh(notification)
+
     return {
-        "message": "Notification created"
+        "message": "Notification sent"
     }
 
 
 @app.get("/notifications/{username}")
-def get_notifications(username: str):
-    user_notifications = [
-        n for n in notifications
-        if n.get("to_user") == username
-    ]
-
-    return user_notifications
+def get_notifications(
+    username: str,
+    db: Session = Depends(get_db)
+):
+    return db.query(Notification).filter(
+        (Notification.to_user == username) |
+        (Notification.from_user == username)
+    ).all()
