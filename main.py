@@ -370,7 +370,6 @@ def get_attendance(
 
 @app.get("/employees")
 def get_employees(
-    current_user: dict = Depends(admin_required),
     db: Session = Depends(get_db)
 ):
 
@@ -382,7 +381,6 @@ def get_employees(
 @app.post("/employees")
 def create_employee_new(
     data: EmployeeCreate,
-    current_user: dict = Depends(admin_required),
     db: Session = Depends(get_db)
 ):
 
