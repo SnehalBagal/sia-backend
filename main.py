@@ -377,7 +377,7 @@ def create_employee_new(
         "employee_id": employee.id
     }   
 
- @app.put("/employees/{employee_id}")
+@app.put("/employees/{employee_id}")
 def update_employee(
     employee_id: int,
     data: EmployeeCreate,
