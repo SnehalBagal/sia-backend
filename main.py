@@ -19,6 +19,8 @@ from app.auth import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.db import SessionLocal
+from app.database.db import SessionLocal, engine, Base
+
 def get_db():
 
     db = SessionLocal()
