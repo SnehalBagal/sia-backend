@@ -17,11 +17,14 @@ from app.auth import (
     get_current_user,
     admin_required
 )
-#from fastapi.middleware.cors import CORSMiddleware
+
 from app.database.db import SessionLocal
 from app.database.db import SessionLocal, engine, Base
 
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
