@@ -492,9 +492,10 @@ class Notification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, index=True)
-    from_user = Column(String(100))
-    to_user = Column(String(100))
+    username = Column(String(100))
     message = Column(Text)
+    type = Column(String(100))
+    is_read = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.now)
 
 Base.metadata.create_all(bind=engine)
@@ -506,18 +507,15 @@ def create_notification(
     db: Session = Depends(get_db)
 ):
     notification = Notification(
-        from_user=data.get("from_user"),
-        to_user=data.get("to_user"),
-        message=data.get("message")
+        username=data.get("to_user"),
+        message=data.get("message"),
+        type="Notification"
     )
 
     db.add(notification)
     db.commit()
-    db.refresh(notification)
 
-    return {
-        "message": "Notification sent"
-    }
+    return {"message": "Notification sent"}
 
 
 @app.get("/notifications/{username}")
@@ -526,19 +524,5 @@ def get_notifications(
     db: Session = Depends(get_db)
 ):
     return db.query(Notification).filter(
-        (Notification.to_user == username) |
-        (Notification.from_user == username)
-    ).all()
-
-@app.get("/notifications/{username}")
-def get_notifications(
-    username: str,
-    db: Session = Depends(get_db)
-):
-
-    notifications = db.query(Notification).filter(
-        (Notification.to_user == username) |
-        (Notification.from_user == username)
-    ).all()
-
-    return notifications    
+        Notification.username == username
+    ).all() 
