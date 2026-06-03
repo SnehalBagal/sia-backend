@@ -430,3 +430,45 @@ def make_employee_inactive(
     return {
         "message": "Employee marked inactive"
     }
+
+@app.put("/employees/{employee_id}/active")
+def make_employee_active(
+    employee_id: int,
+    db: Session = Depends(get_db)
+):
+
+    employee = db.query(Employee).filter(
+        Employee.id == employee_id
+    ).first()
+
+    if not employee:
+        return {"message": "Employee not found"}
+
+    employee.status = "Active"
+
+    db.commit()
+
+    return {
+        "message": "Employee marked active"
+    }
+
+
+@app.delete("/employees/{employee_id}")
+def delete_employee(
+    employee_id: int,
+    db: Session = Depends(get_db)
+):
+
+    employee = db.query(Employee).filter(
+        Employee.id == employee_id
+    ).first()
+
+    if not employee:
+        return {"message": "Employee not found"}
+
+    db.delete(employee)
+    db.commit()
+
+    return {
+        "message": "Employee deleted"
+    }   
