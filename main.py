@@ -527,7 +527,7 @@ def get_notifications(
         Notification.username == username
     ).all()
 
-  class TaskComment(Base):
+class TaskComment(Base):
     __tablename__ = "task_comments"
 
     id = Column(Integer, primary_key=True, index=True)
