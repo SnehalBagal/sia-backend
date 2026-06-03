@@ -367,3 +367,42 @@ def get_attendance(
     records = db.query(Attendance).all()
 
     return records    
+
+@app.get("/employees")
+def get_employees(
+    current_user: dict = Depends(admin_required),
+    db: Session = Depends(get_db)
+):
+
+    employees = db.query(Employee).all()
+
+    return employees
+
+
+@app.post("/employees")
+def create_employee_new(
+    data: EmployeeCreate,
+    current_user: dict = Depends(admin_required),
+    db: Session = Depends(get_db)
+):
+
+    employee = Employee(
+        full_name=data.full_name,
+        username=data.username,
+        password=hash_password(data.password),
+        email=data.email,
+        role=data.role,
+        department=data.department,
+        designation=data.designation,
+        joining_date=data.joining_date,
+        status="Active"
+    )
+
+    db.add(employee)
+    db.commit()
+    db.refresh(employee)
+
+    return {
+        "message": "Employee created successfully",
+        "employee_id": employee.id
+    }   
