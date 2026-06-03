@@ -472,3 +472,9 @@ def delete_employee(
     return {
         "message": "Employee deleted"
     }   
+
+@app.get("/projects")
+def get_projects(
+    db: Session = Depends(get_db)
+):
+    return db.query(Project).all() 

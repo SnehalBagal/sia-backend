@@ -84,8 +84,13 @@ export default function Employees() {
 
     const token = localStorage.getItem("token");
 
+    const url =
+      "https://sia-backend-production-4dcd.up.railway.app/employees/" +
+      employeeId +
+      "/inactive";
+
     await axios.put(
-      "https://sia-backend-production-4dcd.up.railway.app/employees/${employeeId}/inactive",
+      url,
       null,
       {
         headers: {
@@ -105,7 +110,41 @@ export default function Employees() {
     alert("Error marking employee inactive");
 
   }
-}; 
+};
+
+const makeActive = async (employeeId) => {
+
+  try {
+
+    const token = localStorage.getItem("token");
+
+    const url =
+      "https://sia-backend-production-4dcd.up.railway.app/employees/" +
+      employeeId +
+      "/active";
+
+    await axios.put(
+      url,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    alert("Employee marked active");
+
+    fetchEmployees();
+
+  } catch (err) {
+
+    console.log(err);
+
+    alert("Error marking employee active");
+  }
+};
+
 
 const updateEmployee = async () => {
 
@@ -117,7 +156,7 @@ const updateEmployee = async () => {
   };
   console.log(dataToSend);
   await axios.put(
-    "https://sia-backend-production-4dcd.up.railway.app/employees/${editingId}",
+    `https://sia-backend-production-4dcd.up.railway.app/employees/${editingId}`,
     dataToSend,
     {
       headers: {
@@ -135,14 +174,18 @@ const updateEmployee = async () => {
 
 const deleteEmployee = async (employeeId) => {
 
-  if (!confirm("Are you sure you want to delete this employee?")) {
+  if (!confirm("Delete employee?")) {
     return;
   }
 
   const token = localStorage.getItem("token");
 
+  const url =
+    "https://sia-backend-production-4dcd.up.railway.app/employees/" +
+    employeeId;
+
   await axios.delete(
-    "https://sia-backend-production-4dcd.up.railway.app/employees/${employeeId}",
+    url,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -152,7 +195,7 @@ const deleteEmployee = async (employeeId) => {
 
   alert("Employee deleted");
 
-  fetchEmployees();
+  await fetchEmployees();
 };
 
   return (
