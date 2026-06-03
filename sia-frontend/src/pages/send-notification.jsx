@@ -10,11 +10,11 @@ export default function SendNotification() {
   const sendNotification = async () => {
     try {
       await axios.post(
-        "https://sia-backend-production-4dcd.up.railway.app/notifications ",
+        "https://sia-backend-production-4dcd.up.railway.app/notifications",
         {
-          username,
-          message,
-          type
+          from_user: localStorage.getItem("username"),
+          to_user: username,
+          message: type + ": " + message
         }
       );
 
