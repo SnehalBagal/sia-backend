@@ -26,24 +26,31 @@ export default function Employees() {
 
   const fetchEmployees = async () => {
 
-    try {
+  try {
 
-      const res = await axios.get(
-        "https://sia-backend-production-4dcd.up.railway.app/employees"
-      );
-if (Array.isArray(res.data)) {
-  setEmployees(res.data);
-} else {
-  setEmployees([]);
-}
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(
+      "https://sia-backend-production-4dcd.up.railway.app/employees",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (Array.isArray(res.data)) {
       setEmployees(res.data);
-
-    } catch (err) {
-
-      console.log(err);
-
+    } else {
+      setEmployees([]);
     }
-  };
+
+  } catch (err) {
+
+    console.log(err);
+
+  }
+};
 
   const createEmployee = async () => {
 

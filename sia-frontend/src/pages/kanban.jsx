@@ -22,12 +22,20 @@ export default function Kanban() {
 
   try {
 
+    const token = localStorage.getItem("token");
+
+    const url =
+      "https://sia-backend-production-4dcd.up.railway.app/update-task-status/" +
+      taskId +
+      "?status=" +
+      status;
+
     await axios.put(
-      "https://sia-backend-production-4dcd.up.railway.app/update-task-status/${taskId}",
+      url,
       null,
       {
-        params: {
-          status: status
+        headers: {
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -38,7 +46,7 @@ export default function Kanban() {
 
     console.log(err);
 
-    alert("Status update failed");
+    alert("Failed to update task status");
   }
 };
 
