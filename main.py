@@ -478,3 +478,22 @@ def get_projects(
     db: Session = Depends(get_db)
 ):
     return db.query(Project).all() 
+
+notifications = []
+
+@app.post("/notifications")
+def create_notification(data: dict):
+    notifications.append(data)
+    return {
+        "message": "Notification created"
+    }
+
+
+@app.get("/notifications/{username}")
+def get_notifications(username: str):
+    user_notifications = [
+        n for n in notifications
+        if n.get("to_user") == username
+    ]
+
+    return user_notifications
