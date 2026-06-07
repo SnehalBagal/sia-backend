@@ -508,6 +508,7 @@ def create_notification(
 ):
     notification = Notification(
         username=data.get("to_user"),
+        sender_name=data.get("sender_name"),
         message=data.get("message"),
         type="Notification"
     )

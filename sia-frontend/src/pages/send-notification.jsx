@@ -10,13 +10,13 @@ export default function SendNotification() {
   const sendNotification = async () => {
     try {
       await axios.post(
-        "https://sia-backend-production-4dcd.up.railway.app/notifications",
-        {
-          from_user: localStorage.getItem("username"),
-          to_user: username,
-          message: type + ": " + message
-        }
-      );
+  "https://sia-backend-production-4dcd.up.railway.app/notifications",
+  {
+    to_user: assigned_to,
+    sender_name: localStorage.getItem("username"),
+    message: "Task assigned"
+  }
+);
 
       alert("Notification Sent");
 

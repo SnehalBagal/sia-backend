@@ -10,16 +10,25 @@ export default function Notifications() {
   }, []);
 
   const fetchNotifications = async () => {
+
+  try {
+
     const username = localStorage.getItem("username");
 
-    
-      const url =
-  "https://sia-backend-production-4dcd.up.railway.app/notifications/" +
-  username;
-  
+    const url =
+      "https://sia-backend-production-4dcd.up.railway.app/notifications/" +
+      username;
+
+    const res = await axios.get(url);
 
     setNotifications(res.data);
-  };
+
+  } catch (err) {
+
+    console.log(err);
+
+  }
+};
 
   return (
     <div>
@@ -39,8 +48,14 @@ export default function Notifications() {
             }}
           >
             <h3>{item.type}</h3>
-            <p>{item.message}</p>
-            <small>{item.created_at}</small>
+
+<p>
+  <b>From:</b> {item.sender_name || "Unknown"}
+</p>
+
+<p>{item.message}</p>
+
+<small>{item.created_at}</small>
           </div>
         ))}
       </div>

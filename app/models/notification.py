@@ -11,6 +11,8 @@ class Notification(Base):
 
     username = Column(String(100))
 
+    sender_name = Column(String(100))
+
     message = Column(Text)
 
     type = Column(String(50))
