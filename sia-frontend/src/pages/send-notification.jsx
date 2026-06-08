@@ -8,27 +8,26 @@ export default function SendNotification() {
   const [type, setType] = useState("");
 
   const sendNotification = async () => {
-    try {
-      await axios.post(
-  "https://sia-backend-production-4dcd.up.railway.app/notifications",
-  {
-    to_user: assigned_to,
-    sender_name: localStorage.getItem("username"),
-    message: "Task assigned"
+  try {
+    const payload = {
+  to_user: username,
+  sender_name: localStorage.getItem("username") || "Unknown",
+  message: message
+};
+
+    console.log("Notification payload:", payload);
+
+    await axios.post(
+      "https://sia-backend-production-4dcd.up.railway.app/notifications",
+      payload
+    );
+
+    alert("Notification sent");
+  } catch (err) {
+    console.log("ERROR DETAILS:", err.response?.data || err);
+    alert("Notification failed");
   }
-);
-
-      alert("Notification Sent");
-
-      setUsername("");
-      setMessage("");
-      setType("");
-
-    } catch (err) {
-      console.log(err);
-      alert("Error sending notification");
-    }
-  };
+};
 
   return (
     <div>

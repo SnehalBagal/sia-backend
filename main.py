@@ -335,22 +335,27 @@ def logout_time(
     }
 
 
-@app.get("/attendance")
+@app.get("/attendance/{username}")
 def get_attendance(
-    db: Session = Depends(get_db)
-):
-    records = db.query(Attendance).all()
-
-    return records    
-
-@app.get("/employees")
-def get_employees(
+    username: str,
     db: Session = Depends(get_db)
 ):
 
-    employees = db.query(Employee).all()
+    employee = db.query(Employee).filter(
+        Employee.username == username
+    ).first()
 
-    return employees
+    if not employee:
+        return []
+
+    # Admin can see all attendance
+    if employee.role.lower() == "admin":
+        return db.query(Attendance).all()
+
+    # Employee can see only own attendance
+    return db.query(Attendance).filter(
+        Attendance.username == username
+    ).all()
 
 
 @app.post("/employees")

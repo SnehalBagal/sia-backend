@@ -22,8 +22,10 @@ export default function Attendance() {
 
       const token = localStorage.getItem("token");
 
+const username = localStorage.getItem("username");
+
 const res = await axios.get(
-  "https://sia-backend-production-4dcd.up.railway.app/attendance",
+  "https://sia-backend-production-4dcd.up.railway.app/attendance/" + username,
   {
     headers: {
       Authorization: `Bearer ${token}`
