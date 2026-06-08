@@ -29,13 +29,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://sia-frontend-lemon.vercel.app",
-        "https://sia-frontend.vercel.app",
-        "https://sia-frontend-git-main-snehalbagals-projects.vercel.app",
-        "http://localhost:5173",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -572,6 +567,4 @@ def get_task_comments(
 
     return comments
 
-@app.options("/notifications")
-def options_notifications():
-    return {"message": "ok"}        
+       
