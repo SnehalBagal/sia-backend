@@ -498,13 +498,13 @@ Base.metadata.create_all(bind=engine)
 
 @app.post("/notifications")
 def create_notification(
-    data: dict,
+    data: NotificationCreate,
     db: Session = Depends(get_db)
 ):
     notification = Notification(
-        username=data.get("to_user"),
-        sender_name=data.get("sender_name"),
-        message=data.get("message"),
+        username=data.to_user,
+        sender_name=data.sender_name,
+        message=data.message,
         type="Notification"
     )
 

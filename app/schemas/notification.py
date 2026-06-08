@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 
 
+
+
 class NotificationCreate(BaseModel):
-    username: str          # receiver username
-    sender_name: str       # who sent notification
+    to_user: str
+    sender_name: str
     message: str
-    type: str
