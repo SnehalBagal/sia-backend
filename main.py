@@ -501,22 +501,22 @@ def create_notification(
     data: dict,
     db: Session = Depends(get_db)
 ):
-    notification = Notification(
-        username=data.get("to_user"),
-        sender_name=data.get("sender_name", "Unknown"),
-        message=data.get("message"),
-        type="Notification"
-    )
+    try:
+        notification = Notification(
+            username=data.get("to_user"),
+            sender_name=data.get("sender_name"),
+            message=data.get("message"),
+            type="Notification"
+        )
 
-    db.add(notification)
-    db.commit()
-    db.refresh(notification)
+        db.add(notification)
+        db.commit()
 
-    return {
-        "message": "Notification sent",
-        "id": notification.id,
-        "sender_name": notification.sender_name
-    }
+        return {"message": "Notification sent"}
+
+    except Exception as e:
+        print("NOTIFICATION ERROR:", str(e))
+        return {"error": str(e)}
 
 
 @app.get("/notifications/{username}")
