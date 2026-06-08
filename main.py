@@ -11,6 +11,7 @@ from app.schemas.auth import ProjectCreate
 from app.models.task import Task
 from app.schemas.auth import TaskCreate
 from datetime import datetime
+from app.schemas.notification import NotificationCreate
 from app.models.attendance import Attendance
 from app.auth import (
     create_access_token,
