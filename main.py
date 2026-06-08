@@ -515,7 +515,7 @@ def create_notification(
         return {"message": "Notification sent"}
 
     except Exception as e:
-        print("NOTIFICATION ERROR:", str(e))
+        print("ERROR:", str(e))
         return {"error": str(e)}
 
 
