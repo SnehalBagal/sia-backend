@@ -46,12 +46,6 @@ def get_db():
         db.close()
 
 
-
-
-
-
-
-
 @app.get("/")
 def home():
     return {"message": "SIA Running"}
@@ -571,3 +565,7 @@ def get_task_comments(
     ).all()
 
     return comments
+
+@app.options("/notifications")
+def options_notifications():
+    return {"message": "ok"}    
