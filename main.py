@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+#from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 
 from app.database.db import SessionLocal
@@ -29,12 +29,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://sia-frontend-lemon.vercel.app",
-        "https://sia-frontend.vercel.app",
-        "http://localhost:5173",
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
