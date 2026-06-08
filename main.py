@@ -492,6 +492,7 @@ class Notification(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(100))
+    sender_name = Column(String(100))
     message = Column(Text)
     type = Column(String(100))
     is_read = Column(Integer, default=0)
@@ -573,4 +574,4 @@ def get_task_comments(
 
 @app.options("/notifications")
 def options_notifications():
-    return {"message": "ok"}    
+    return {"message": "ok"}        
