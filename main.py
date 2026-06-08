@@ -503,15 +503,20 @@ def create_notification(
 ):
     notification = Notification(
         username=data.get("to_user"),
-        sender_name=data.get("sender_name"),
+        sender_name=data.get("sender_name", "Unknown"),
         message=data.get("message"),
         type="Notification"
     )
 
     db.add(notification)
     db.commit()
+    db.refresh(notification)
 
-    return {"message": "Notification sent"}
+    return {
+        "message": "Notification sent",
+        "id": notification.id,
+        "sender_name": notification.sender_name
+    }
 
 
 @app.get("/notifications/{username}")
