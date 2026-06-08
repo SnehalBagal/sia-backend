@@ -335,24 +335,37 @@ def logout_time(
     }
 
 
+@app.get("/attendance")
+def get_attendance_old(
+    username: str,
+    db: Session = Depends(get_db)
+):
+    employee = db.query(Employee).filter(Employee.username == username).first()
+
+    if not employee:
+        return []
+
+    if employee.role.lower() == "admin":
+        return db.query(Attendance).all()
+
+    return db.query(Attendance).filter(
+        Attendance.username == username
+    ).all()
+
+
 @app.get("/attendance/{username}")
 def get_attendance(
     username: str,
     db: Session = Depends(get_db)
 ):
-
-    employee = db.query(Employee).filter(
-        Employee.username == username
-    ).first()
+    employee = db.query(Employee).filter(Employee.username == username).first()
 
     if not employee:
         return []
 
-    # Admin can see all attendance
     if employee.role.lower() == "admin":
         return db.query(Attendance).all()
 
-    # Employee can see only own attendance
     return db.query(Attendance).filter(
         Attendance.username == username
     ).all()
