@@ -73,10 +73,9 @@ export default function Employees() {
       fetchEmployees();
 
     } catch (err) {
-
-      console.log(err);
-
-    }
+  console.log("CREATE EMPLOYEE ERROR:", err.response?.data || err);
+  alert(JSON.stringify(err.response?.data || err.message));
+}
   };
   const makeInactive = async (employeeId) => {
 
