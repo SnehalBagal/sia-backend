@@ -592,3 +592,75 @@ def get_all_employees(
     db: Session = Depends(get_db)
 ):
     return db.query(Employee).all()      
+
+ class LeaveRequest(Base):
+    __tablename__ = "leave_requests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(100))
+    leave_type = Column(String(100))
+    start_date = Column(String(50))
+    end_date = Column(String(50))
+    reason = Column(Text)
+    status = Column(String(50), default="Pending")
+    applied_at = Column(DateTime, default=datetime.now)
+
+Base.metadata.create_all(bind=engine)      
+
+
+@app.post("/apply-leave")
+def apply_leave(
+    data: dict,
+    db: Session = Depends(get_db)
+):
+    leave = LeaveRequest(
+        username=data.get("username"),
+        leave_type=data.get("leave_type"),
+        start_date=data.get("start_date"),
+        end_date=data.get("end_date"),
+        reason=data.get("reason"),
+        status="Pending"
+    )
+
+    db.add(leave)
+    db.commit()
+    db.refresh(leave)
+
+    return {"message": "Leave applied successfully"}
+
+
+@app.get("/leaves/{username}")
+def get_leaves(
+    username: str,
+    db: Session = Depends(get_db)
+):
+    employee = db.query(Employee).filter(Employee.username == username).first()
+
+    if not employee:
+        return []
+
+    if employee.role.lower() == "admin":
+        return db.query(LeaveRequest).all()
+
+    return db.query(LeaveRequest).filter(
+        LeaveRequest.username == username
+    ).all()   
+
+@app.put("/leave/{leave_id}/status")
+def update_leave_status(
+    leave_id: int,
+    data: dict,
+    db: Session = Depends(get_db)
+):
+    leave = db.query(LeaveRequest).filter(
+        LeaveRequest.id == leave_id
+    ).first()
+
+    if not leave:
+        return {"message": "Leave not found"}
+
+    leave.status = data.get("status")
+
+    db.commit()
+
+    return {"message": "Leave status updated"}    
