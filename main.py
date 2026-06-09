@@ -593,7 +593,7 @@ def get_all_employees(
 ):
     return db.query(Employee).all()      
 
- class LeaveRequest(Base):
+class LeaveRequest(Base):
     __tablename__ = "leave_requests"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -663,4 +663,4 @@ def update_leave_status(
 
     db.commit()
 
-    return {"message": "Leave status updated"}    
+    return {"message": "Leave status updated"}      
