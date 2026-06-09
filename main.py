@@ -664,3 +664,37 @@ def update_leave_status(
     db.commit()
 
     return {"message": "Leave status updated"}      
+
+@app.delete("/tasks/{task_id}")
+def delete_task(
+    task_id: int,
+    db: Session = Depends(get_db)
+):
+    task = db.query(Task).filter(
+        Task.id == task_id
+    ).first()
+
+    if not task:
+        return {"message": "Task not found"}
+
+    db.delete(task)
+    db.commit()
+
+    return {"message": "Task deleted"}   
+
+@app.delete("/projects/{project_id}")
+def delete_project(
+    project_id: int,
+    db: Session = Depends(get_db)
+):
+    project = db.query(Project).filter(
+        Project.id == project_id
+    ).first()
+
+    if not project:
+        return {"message": "Project not found"}
+
+    db.delete(project)
+    db.commit()
+
+    return {"message": "Project deleted"}    

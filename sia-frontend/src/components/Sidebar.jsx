@@ -118,6 +118,8 @@ const username = localStorage.getItem("username");
           Send Notification
         </Link>
 
+        <Link to="/leave">Leave Management</Link>
+
         <button
   onClick={logout}
   style={{
