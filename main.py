@@ -385,7 +385,7 @@ def create_employee_new(
         role=data.role,
         department=data.department,
         designation=data.designation,
-        joining_date=getattr(data, "joining_date", None),
+        joining_date=data.joining_date,
         status="Active"
     )
 
