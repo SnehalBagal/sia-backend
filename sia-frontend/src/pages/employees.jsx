@@ -25,30 +25,16 @@ export default function Employees() {
   }, []);
 
   const fetchEmployees = async () => {
-
   try {
-
-    const token = localStorage.getItem("token");
-
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/employees",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
+      "https://sia-backend-production-4dcd.up.railway.app/all-employees"
     );
 
-    if (Array.isArray(res.data)) {
-      setEmployees(res.data);
-    } else {
-      setEmployees([]);
-    }
+    console.log("EMPLOYEES DATA:", res.data);
+    setEmployees(Array.isArray(res.data) ? res.data : []);
 
   } catch (err) {
-
-    console.log(err);
-
+    console.log("FETCH EMPLOYEES ERROR:", err.response?.data || err);
   }
 };
 

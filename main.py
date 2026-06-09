@@ -587,4 +587,8 @@ def get_task_comments(
 
     return comments
 
-       
+@app.get("/all-employees")
+def get_all_employees(
+    db: Session = Depends(get_db)
+):
+    return db.query(Employee).all()      
