@@ -553,15 +553,15 @@ def add_comment(
     data: dict,
     db: Session = Depends(get_db)
 ):
-
     comment = TaskComment(
         task_id=data.get("task_id"),
-        username=data.get("username"),
-        comment=data.get("comment")
+        comment=data.get("comment"),
+        comment_by=data.get("comment_by") or data.get("username")
     )
 
     db.add(comment)
     db.commit()
+    db.refresh(comment)
 
     return {
         "message": "Comment added"

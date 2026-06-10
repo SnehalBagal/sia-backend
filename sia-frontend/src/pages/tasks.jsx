@@ -70,13 +70,13 @@ const fetchComments = async (taskId) => {
 const addComment = async (taskId) => {
   try {
     await axios.post(
-      "https://sia-backend-production-4dcd.up.railway.app/add-comment",
-      {
-        task_id: taskId,
-        comment: newComments[taskId],
-        comment_by: localStorage.getItem("username")
-      }
-    );
+  "https://sia-backend-production-4dcd.up.railway.app/add-comment",
+  {
+    task_id: taskId,
+    comment: newComments[taskId],
+    comment_by: localStorage.getItem("username")
+  }
+);
 
     setNewComments({
       ...newComments,
