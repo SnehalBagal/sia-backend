@@ -9,7 +9,7 @@ export default function Projects() {
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
   const [createdBy, setCreatedBy] = useState("");
-
+ 
   useEffect(() => {
 
     fetchProjects();
@@ -33,29 +33,48 @@ export default function Projects() {
     }
   };
 
+  
+
   const createProject = async () => {
+  try {
+    const token = localStorage.getItem("token");
 
-    try {
-
-      await axios.post(
-        "https://sia-backend-production-4dcd.up.railway.app/create-project",
-        {
-          project_name: projectName,
-          description,
-          created_by: createdBy
+    await axios.post(
+      "https://sia-backend-production-4dcd.up.railway.app/create-project",
+      {
+        project_name: projectName,
+        description: description,
+        created_by: localStorage.getItem("username")
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      }
+    );
 
-      alert("Project Created");
+    alert("Project Created");
+    fetchProjects();
 
-      fetchProjects();
+  } catch (err) {
+    console.log("CREATE PROJECT ERROR:", err.response?.data || err);
+    alert("Error creating project");
+  }
+};
 
-    } catch (err) {
+  const deleteProject = async (projectId) => {
 
-      console.log(err);
+  if (!window.confirm("Delete project?")) return;
 
-    }
-  };
+  await axios.delete(
+    "https://sia-backend-production-4dcd.up.railway.app/projects/" +
+      projectId
+  );
+
+  alert("Project deleted");
+
+  fetchProjects();
+};
 
   return (
 
@@ -71,6 +90,7 @@ export default function Projects() {
       >
 
         <h1>Projects</h1>
+        <h2 style={{ color: "red" }}>TEST DELETE BUTTON VERSION</h2>
 
         <div
           style={{
@@ -111,6 +131,8 @@ export default function Projects() {
           >
             Create Project
           </button>
+
+          
 
         </div>
 
@@ -153,6 +175,21 @@ export default function Projects() {
                   {" "}
                   {project.status}
                 </p>
+
+                <button
+                  onClick={() => deleteProject(project.id)}
+                  style={{
+                    marginTop: "10px",
+                    background: "gray",
+                    color: "white",
+                    border: "none",
+                    padding: "8px 12px",
+                    borderRadius: "5px",
+                    cursor: "pointer"
+                  }}
+                >
+                  Delete Project
+                </button>
 
               </div>
             ))

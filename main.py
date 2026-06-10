@@ -22,6 +22,7 @@ from app.auth import (
 from app.database.db import SessionLocal
 from app.database.db import SessionLocal, engine, Base
 from sqlalchemy import Column, Integer, String, Text, DateTime
+from app.models.task_comment import TaskComment
 
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -543,14 +544,6 @@ def get_notifications(
         Notification.username == username
     ).all()
 
-class TaskComment(Base):
-    __tablename__ = "task_comments"
-
-    id = Column(Integer, primary_key=True, index=True)
-    task_id = Column(Integer)
-    username = Column(String(100))
-    comment = Column(Text)
-    created_at = Column(DateTime, default=datetime.now)
 
 
 Base.metadata.create_all(bind=engine)
