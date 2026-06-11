@@ -24,6 +24,8 @@ class Employee(Base):
     
     joining_date = Column(Date)
 
+    leaving_date = Column(Date, nullable=True)
+
     status = Column(String(20), default="active")
 
     created_at = Column(DateTime, default=datetime.utcnow)

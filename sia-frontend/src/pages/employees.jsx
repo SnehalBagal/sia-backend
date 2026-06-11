@@ -327,8 +327,9 @@ const deleteEmployee = async (employeeId) => {
               <th>Role</th>
               <th>Department</th>
               <th>Designation</th>
+              <th>Joining Date</th>
+              <th>Leaving Date</th>
               <th>Status</th>
-              <th>Action</th>
               
             </tr>
 
@@ -353,6 +354,10 @@ const deleteEmployee = async (employeeId) => {
                   <td>{employee.department}</td>
 
                   <td>{employee.designation}</td>
+
+                  <td>{employee.joining_date}</td>
+                  
+                  <td>{employee.leaving_date || "-"}</td>
 
                   <td>{employee.status}</td>
 

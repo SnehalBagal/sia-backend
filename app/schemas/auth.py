@@ -17,6 +17,7 @@ class EmployeeCreate(BaseModel):
     department: str
     designation: str
     joining_date: Optional[date] = None
+    leaving_date: Optional[date] = None
 
 class ProjectCreate(BaseModel):
     project_name: str

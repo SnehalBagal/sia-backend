@@ -387,6 +387,7 @@ def create_employee_new(
         department=data.department,
         designation=data.designation,
         joining_date=data.joining_date,
+        leaving_date=data.leaving_date,
         status="Active"
     )
 
@@ -419,6 +420,7 @@ def update_employee(
     employee.role = data.role
     employee.department = data.department
     employee.designation = data.designation
+    employee.leaving_date = data.leaving_date
 
     if hasattr(data, "joining_date"):
         employee.joining_date = data.joining_date
