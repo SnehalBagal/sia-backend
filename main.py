@@ -44,10 +44,15 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_origins=[
+        "https://sia.kpaindia.co.in",
+        "https://sia-frontend-lemon.vercel.app",
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
     allow_headers=["*"],
+)
 )
 
 def get_db():
