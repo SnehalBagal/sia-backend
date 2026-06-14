@@ -558,6 +558,10 @@ async def create_notification(
         Employee.username == data.to_user
     ).first()
 
+    print("TO USER:", data.to_user)
+    print("EMPLOYEE FOUND:", employee)
+    print("EMPLOYEE EMAIL:", employee.email if employee else None)
+
     if employee and employee.email:
         try:
             email = MessageSchema(
