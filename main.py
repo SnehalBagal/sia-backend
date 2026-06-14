@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
+import os
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 
 from app.database.db import SessionLocal
 from app.models.employee import Employee
@@ -17,6 +19,17 @@ from app.auth import (
     create_access_token,
     get_current_user,
     admin_required
+)
+
+conf = ConnectionConfig(
+    MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
+    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
+    MAIL_FROM=os.getenv("MAIL_FROM"),
+    MAIL_PORT=int(os.getenv("MAIL_PORT", 465)),
+    MAIL_SERVER=os.getenv("MAIL_SERVER"),
+    MAIL_STARTTLS=False,
+    MAIL_SSL_TLS=True,
+    USE_CREDENTIALS=True
 )
 
 from app.database.db import SessionLocal
@@ -519,7 +532,7 @@ Base.metadata.create_all(bind=engine)
 
 
 @app.post("/notifications")
-def create_notification(
+async def create_notification(
     data: NotificationCreate,
     db: Session = Depends(get_db)
 ):
@@ -533,6 +546,31 @@ def create_notification(
     db.add(notification)
     db.commit()
     db.refresh(notification)
+
+    employee = db.query(Employee).filter(
+        Employee.username == data.to_user
+    ).first()
+
+    if employee and employee.email:
+        email = MessageSchema(
+            subject="SIA Notification",
+            recipients=[employee.email],
+            body=f"""
+Hello {employee.full_name},
+
+You have a new SIA notification.
+
+From: {data.sender_name}
+Message: {data.message}
+
+Open SIA:
+https://sia.kpaindia.co.in
+""",
+            subtype="plain"
+        )
+
+        fm = FastMail(conf)
+        await fm.send_message(email)
 
     return {"message": "Notification sent"}
 
