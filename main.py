@@ -205,32 +205,32 @@ def kanban_board():
 
 @app.get("/dashboard")
 def dashboard(
-    current_user: dict = Depends(admin_required)
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
-
-    db: Session = SessionLocal()
-
-    total_tasks = db.query(Task).count()
-
-    pending_tasks = db.query(Task).filter(
-        Task.status == "Pending"
-    ).count()
-
-    completed_tasks = db.query(Task).filter(
-        Task.status == "Completed"
-    ).count()
-
-    employees = db.query(Employee).count()
-
-    projects = db.query(Project).count()
-
-    return {
-        "total_tasks": total_tasks,
-        "pending_tasks": pending_tasks,
-        "completed_tasks": completed_tasks,
-        "employees": employees,
-        "projects": projects
+    result = {
+        "total_tasks": db.query(Task).count(),
+        "pending_tasks": db.query(Task)
+            .filter(Task.status == "Pending")
+            .count(),
+        "completed_tasks": db.query(Task)
+            .filter(Task.status == "Completed")
+            .count()
     }
+
+    if current_user["role"].lower() == "admin":
+        result.update({
+            "total_employees": db.query(Employee).count(),
+            "active_employees": db.query(Employee)
+                .filter(Employee.status == "Active")
+                .count(),
+            "inactive_employees": db.query(Employee)
+                .filter(Employee.status == "Inactive")
+                .count(),
+            "total_projects": db.query(Project).count()
+        })
+
+    return result
 
 
 @app.post("/create-first-admin")

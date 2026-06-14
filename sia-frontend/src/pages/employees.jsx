@@ -15,7 +15,8 @@ export default function Employees() {
   role: "",
   department: "",
   designation: "",
-  joining_date: ""
+  joining_date: "",
+  leaving_date: ""  
 });
 
   useEffect(() => {
@@ -287,6 +288,17 @@ const deleteEmployee = async (employeeId) => {
           />
 
           <input
+  type="date"
+  value={formData.leaving_date || ""}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      leaving_date: e.target.value
+    })
+  }
+/>
+
+          <input
   placeholder="Email"
   value={formData.email || ""}
   onChange={(e) =>
@@ -375,15 +387,27 @@ const deleteEmployee = async (employeeId) => {
       role: employee.role,
       department: employee.department,
       designation: employee.designation,
-      joining_date: employee.joining_date
+      joining_date: employee.joining_date,
+      leaving_date: employee.leaving_date || ""
     });
   }}
+  style={{
+    width: "80px",
+    padding: "8px"
+  }}
+
+  
 >
   Edit
 </button>
 
 <button
   onClick={() => deleteEmployee(employee.id)}
+  style={{
+    width: "80px",
+    padding: "8px"
+  }}
+
 >
   Delete
 </button>

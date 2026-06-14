@@ -7,6 +7,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([]);
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -67,6 +68,8 @@ const completedTasks = Array.isArray(tasks)
             <h3>Total Tasks</h3>
             <h1>{totalTasks}</h1>
           </div>
+
+          
 
           <div style={{ padding: "25px", border: "1px solid #ddd", borderRadius: "12px", width: "200px" }}>
             <h3>Pending</h3>
