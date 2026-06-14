@@ -47,13 +47,15 @@ app.add_middleware(
     allow_origins=[
         "https://sia.kpaindia.co.in",
         "https://sia-frontend-lemon.vercel.app",
-        "http://localhost:5173"
+        "https://sia-frontend.vercel.app",
+        "https://sia-frontend-git-main-snehalbagals-projects.vercel.app",
+        "http://localhost:5173",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-)
+
 
 def get_db():
 
