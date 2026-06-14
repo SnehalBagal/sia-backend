@@ -559,10 +559,11 @@ async def create_notification(
     ).first()
 
     if employee and employee.email:
-        email = MessageSchema(
-            subject="SIA Notification",
-            recipients=[employee.email],
-            body=f"""
+        try:
+            email = MessageSchema(
+                subject="SIA Notification",
+                recipients=[employee.email],
+                body=f"""
 Hello {employee.full_name},
 
 You have a new SIA notification.
@@ -573,11 +574,18 @@ Message: {data.message}
 Open SIA:
 https://sia.kpaindia.co.in
 """,
-            subtype="plain"
-        )
+                subtype="plain"
+            )
 
-        fm = FastMail(conf)
-        await fm.send_message(email)
+            fm = FastMail(conf)
+            await fm.send_message(email)
+
+        except Exception as e:
+            print("EMAIL ERROR:", str(e))
+            return {
+                "message": "Notification saved but email failed",
+                "email_error": str(e)
+            }
 
     return {"message": "Notification sent"}
 
