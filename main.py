@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-import os
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
+
 
 from app.database.db import SessionLocal
 from app.models.employee import Employee
@@ -21,16 +20,6 @@ from app.auth import (
     admin_required
 )
 
-conf = ConnectionConfig(
-    MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
-    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
-    MAIL_FROM=os.getenv("MAIL_FROM"),
-    MAIL_PORT=int(os.getenv("MAIL_PORT", 587)),
-    MAIL_SERVER=os.getenv("MAIL_SERVER"),
-    MAIL_STARTTLS=True,
-    MAIL_SSL_TLS=False,
-    USE_CREDENTIALS=True
-)
 
 from app.database.db import SessionLocal
 from app.database.db import SessionLocal, engine, Base
@@ -539,7 +528,7 @@ Base.metadata.create_all(bind=engine)
 
 
 @app.post("/notifications")
-async def create_notification(
+def create_notification(
     data: NotificationCreate,
     db: Session = Depends(get_db)
 ):
@@ -553,43 +542,6 @@ async def create_notification(
     db.add(notification)
     db.commit()
     db.refresh(notification)
-
-    employee = db.query(Employee).filter(
-        Employee.username == data.to_user
-    ).first()
-
-    print("TO USER:", data.to_user)
-    print("EMPLOYEE FOUND:", employee)
-    print("EMPLOYEE EMAIL:", employee.email if employee else None)
-
-    if employee and employee.email:
-        try:
-            email = MessageSchema(
-                subject="SIA Notification",
-                recipients=[employee.email],
-                body=f"""
-Hello {employee.full_name},
-
-You have a new SIA notification.
-
-From: {data.sender_name}
-Message: {data.message}
-
-Open SIA:
-https://sia.kpaindia.co.in
-""",
-                subtype="plain"
-            )
-
-            fm = FastMail(conf)
-            await fm.send_message(email)
-
-        except Exception as e:
-            print("EMAIL ERROR:", str(e))
-            return {
-                "message": "Notification saved but email failed",
-                "email_error": str(e)
-            }
 
     return {"message": "Notification sent"}
 
