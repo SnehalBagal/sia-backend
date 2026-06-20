@@ -100,7 +100,7 @@ def create_project(
     project = Project(
         project_name=data.project_name,
         description=data.description,
-        created_by=data.created_by
+        created_by=data.created_by,
         assignee=data.assignee,
         reporter=data.reporter,
         start_date=data.start_date,
