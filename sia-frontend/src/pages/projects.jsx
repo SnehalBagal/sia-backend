@@ -31,15 +31,16 @@ export default function Projects() {
     await axios.post(
       "https://sia-backend-production-4dcd.up.railway.app/create-project",
       {
-        project_name: projectName,
-        assignee,
-        reporter,
-        start_date: startDate,
-        due_date: dueDate,
-        status,
-        priority,
-        created_by: localStorage.getItem("username")
-      },
+  project_name: projectName,
+  description: "",
+  assignee,
+  reporter,
+  start_date: startDate || null,
+  due_date: dueDate || null,
+  status,
+  priority,
+  created_by: localStorage.getItem("username")
+},
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -133,7 +134,7 @@ export default function Projects() {
                 <th style={th}>Start Date</th>
                 <th style={th}>Due Date</th>
                 <th style={th}>Status</th>
-                <th style={th}>Priority</th>
+                <th style={th}>Priority</th>  
                 <th style={th}>Delete</th>
               </tr>
             </thead>

@@ -27,4 +27,4 @@ class Project(Base):
 
     priority = Column(String(50), default="Medium")
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+   
