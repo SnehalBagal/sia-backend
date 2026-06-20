@@ -23,7 +23,13 @@ class ProjectCreate(BaseModel):
     project_name: str
     description: str
     created_by: str
-
+    assignee: Optional[str] = None
+    reporter: Optional[str] = None
+    start_date: Optional[date] = None
+    due_date: Optional[date] = None
+    status: Optional[str] = "Discussion"
+    priority: Optional[str] = "Medium"
+    
 class TaskCreate(BaseModel):
     title: str
     description: str
