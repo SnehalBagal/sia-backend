@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
+import { useEffect } from "react";
+import axios from "axios";
+
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -55,6 +58,35 @@ const completedTasks = Array.isArray(tasks)
       (task) => task.status === "Completed"
     ).length
   : 0;
+
+useEffect(() => {
+  fetchTodayEvents();
+}, []);
+
+const fetchTodayEvents = async () => {
+  try {
+
+    const res = await axios.get(
+      "https://sia-backend-production-4dcd.up.railway.app/today-events"
+    );
+
+    if (res.data.length > 0) {
+
+      alert(
+        res.data
+          .map(
+            e => `${e.event_type}: ${e.title}`
+          )
+          .join("\n")
+      );
+
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
   return (
     <div>
       <Sidebar />

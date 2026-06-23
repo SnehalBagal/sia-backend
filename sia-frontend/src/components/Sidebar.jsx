@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function Sidebar() {
 
@@ -16,6 +18,29 @@ export default function Sidebar() {
 };
 
 const username = localStorage.getItem("username");
+
+const [notificationCount, setNotificationCount] = useState(0);
+
+useEffect(() => {
+  fetchNotificationCount();
+}, []);
+
+const fetchNotificationCount = async () => {
+  try {
+    const username = localStorage.getItem("username");
+
+    const res = await axios.get(
+  "https://sia-backend-production-4dcd.up.railway.app/notifications/" +
+    username +
+    "/unread-count"
+);
+
+setNotificationCount(res.data.count);
+
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   return (
 
@@ -105,12 +130,27 @@ const username = localStorage.getItem("username");
         </Link>
 
 
-        <Link 
-          to="/notifications"  
-          style={{ color: "white" }} 
-        >
-          Notifications
-        </Link>
+        <Link
+  to="/notifications"
+  style={{ color: "white" }}
+>
+  🔔 Notifications
+
+  {notificationCount > 0 && (
+    <span
+      style={{
+        background: "red",
+        color: "white",
+        borderRadius: "50%",
+        padding: "2px 8px",
+        marginLeft: "8px",
+        fontSize: "12px"
+      }}
+    >
+      {notificationCount}
+    </span>
+  )}
+</Link>
 
         <Link to="/send-notification"  
           style={{ color: "white" }} 

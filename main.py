@@ -708,3 +708,58 @@ def delete_project(
     db.commit()
 
     return {"message": "Project deleted"}    
+
+
+@app.get("/notifications/{username}/unread-count")
+def unread_notification_count(
+    username: str,
+    db: Session = Depends(get_db)
+):
+    count = db.query(Notification).filter(
+        Notification.username == username,
+        Notification.is_read == 0
+    ).count()
+
+    return {"count": count}
+
+@app.put("/notifications/{username}/mark-read")
+def mark_notifications_read(
+    username: str,
+    db: Session = Depends(get_db)
+):
+    notifications = db.query(Notification).filter(
+        Notification.username == username,
+        Notification.is_read == 0
+    ).all()
+
+    for notification in notifications:
+        notification.is_read = 1
+
+    db.commit()
+
+    return {"message": "Notifications marked as read"}       
+
+
+@app.post("/events")
+def create_event(data: dict, db: Session = Depends(get_db)):
+    event = Event(
+        title=data["title"],
+        event_date=data["event_date"],
+        event_type=data["event_type"],
+        description=data["description"],
+        created_by=data["created_by"]
+    )
+
+    db.add(event)
+    db.commit()
+
+    return {"message": "Event created"}
+
+@app.get("/today-events")
+def today_events(db: Session = Depends(get_db)):
+
+    today = date.today()
+
+    return db.query(Event).filter(
+        Event.event_date == today
+    ).all()       

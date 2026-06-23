@@ -23,6 +23,12 @@ export default function Notifications() {
 
     setNotifications(res.data);
 
+    await axios.put(
+    "https://sia-backend-production-4dcd.up.railway.app/notifications/" +
+    username +
+    "/mark-read"
+  );
+
   } catch (err) {
 
     console.log(err);

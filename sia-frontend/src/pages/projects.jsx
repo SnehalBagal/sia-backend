@@ -76,7 +76,7 @@ export default function Projects() {
   const table = {
     width: "1300px",
     borderCollapse: "collapse",
-    background: "#1f1f1f",
+    background: "#dba4a4",
     color: "white"
   };
 
