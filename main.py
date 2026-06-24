@@ -742,13 +742,16 @@ def mark_notifications_read(
 
 
 @app.post("/events")
-def create_event(data: dict, db: Session = Depends(get_db)):
+def create_event(
+    data: dict,
+    db: Session = Depends(get_db)
+):
     event = Event(
-        title=data["title"],
-        event_date=data["event_date"],
-        event_type=data["event_type"],
-        description=data["description"],
-        created_by=data["created_by"]
+        title=data.get("title"),
+        event_date=data.get("event_date"),
+        event_type=data.get("event_type"),
+        description=data.get("description"),
+        created_by=data.get("created_by")
     )
 
     db.add(event)
