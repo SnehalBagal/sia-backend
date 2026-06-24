@@ -11,7 +11,7 @@ from app.models.project import Project
 from app.schemas.auth import ProjectCreate
 from app.models.task import Task
 from app.schemas.auth import TaskCreate
-from datetime import datetime
+from datetime import datetime, date
 from app.schemas.notification import NotificationCreate
 from app.models.attendance import Attendance
 from app.auth import (
@@ -19,12 +19,13 @@ from app.auth import (
     get_current_user,
     admin_required
 )
-
+from datetime import date
 
 from app.database.db import SessionLocal
 from app.database.db import SessionLocal, engine, Base
 from sqlalchemy import Column, Integer, String, Text, DateTime
 from app.models.task_comment import TaskComment
+from app.models.event import Event
 
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -757,8 +758,7 @@ def create_event(data: dict, db: Session = Depends(get_db)):
 
 @app.get("/today-events")
 def today_events(db: Session = Depends(get_db)):
-
-    today = date.today()
+    today = datetime.now().date()
 
     return db.query(Event).filter(
         Event.event_date == today
