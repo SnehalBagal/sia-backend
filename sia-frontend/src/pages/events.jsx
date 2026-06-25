@@ -86,6 +86,10 @@ export default function Events() {
             <option>Holiday</option>
             <option>Training</option>
             <option>Announcement</option>
+            <option>Festival</option>
+            <option>Office Announcement</option>
+            <option>Urgent Notice</option>
+            <option>Work Anniversary</option>
           </select>
 
           <input

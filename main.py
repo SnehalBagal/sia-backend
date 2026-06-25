@@ -26,6 +26,7 @@ from app.database.db import SessionLocal, engine, Base
 from sqlalchemy import Column, Integer, String, Text, DateTime
 from app.models.task_comment import TaskComment
 from app.models.event import Event
+from app.models.event_seen import EventSeen
 
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -787,3 +788,54 @@ def delete_event(
     db.commit()
 
     return {"message": "Event deleted"}       
+
+@app.get("/popup-events/{username}")
+def popup_events(
+    username: str,
+    db: Session = Depends(get_db)
+):
+
+    today = datetime.now().date()
+
+    today_events = db.query(Event).filter(
+        Event.event_date == today
+    ).all()
+
+    unseen_events = []
+
+    for event in today_events:
+
+        seen = db.query(EventSeen).filter(
+            EventSeen.event_id == event.id,
+            EventSeen.username == username
+        ).first()
+
+        if not seen:
+            unseen_events.append(event)
+
+    return unseen_events
+
+@app.post("/events/{event_id}/seen/{username}")
+def mark_event_seen(
+    event_id: int,
+    username: str,
+    db: Session = Depends(get_db)
+):
+
+    existing = db.query(EventSeen).filter(
+        EventSeen.event_id == event_id,
+        EventSeen.username == username
+    ).first()
+
+    if existing:
+        return {"message": "Already seen"}
+
+    seen = EventSeen(
+        event_id=event_id,
+        username=username
+    )
+
+    db.add(seen)
+    db.commit()
+
+    return {"message": "Event marked seen"}        

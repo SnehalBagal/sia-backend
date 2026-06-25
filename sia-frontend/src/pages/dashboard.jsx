@@ -87,9 +87,118 @@ const fetchTodayEvents = async () => {
   }
 };
 
+const [popupEvents, setPopupEvents] = useState([]);
+const [showEventPopup, setShowEventPopup] = useState(false);
+useEffect(() => {
+  fetchPopupEvents();
+}, []);
+
+const fetchPopupEvents = async () => {
+  try {
+    const username = localStorage.getItem("username");
+
+    const res = await axios.get(
+      "https://sia-backend-production-4dcd.up.railway.app/popup-events/" +
+        username
+    );
+
+    if (res.data.length > 0) {
+      setPopupEvents(res.data);
+      setShowEventPopup(true);
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
   return (
     <div>
       <Sidebar />
+
+      {showEventPopup && popupEvents.length > 0 && (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      background: "rgba(0,0,0,0.4)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 9999
+    }}
+  >
+    <div
+      style={{
+        background: "white",
+        width: "420px",
+        borderRadius: "12px",
+        padding: "25px",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
+      }}
+    >
+      <h2>🔔 Today's Events</h2>
+
+      {popupEvents.map((event) => (
+        <div
+          key={event.id}
+          style={{
+            borderBottom: "1px solid #ddd",
+            padding: "10px 0"
+          }}
+        >
+          <h3>
+            {event.event_type === "Birthday" && "🎂 "}
+            {event.event_type === "Meeting" && "📅 "}
+            {event.event_type === "Festival" && "🎉 "}
+            {event.event_type === "Office Announcement" && "📢 "}
+            {event.event_type === "Training" && "🎓 "}
+            {event.event_type === "Urgent Notice" && "⚠️ "}
+            {event.event_type === "Work Anniversary" && "🥳 "}
+            {event.title}
+          </h3>
+
+          <p>{event.description}</p>
+          <small>{event.event_date}</small>
+        </div>
+      ))}
+
+      <button
+        onClick={async () => {
+          const username = localStorage.getItem("username");
+
+          for (const event of popupEvents) {
+            await axios.post(
+              "https://sia-backend-production-4dcd.up.railway.app/events/" +
+                event.id +
+                "/seen/" +
+                username
+            );
+          }
+
+          setShowEventPopup(false);
+        }}
+        style={{
+          marginTop: "20px",
+          width: "100%",
+          padding: "10px",
+          background: "#2563eb",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer"
+        }}
+      >
+        OK, Got it
+      </button>
+    </div>
+  </div>
+)}
 
       <div style={{ marginLeft: "260px", padding: "40px" }}>
         <h1>SIA Dashboard</h1>
