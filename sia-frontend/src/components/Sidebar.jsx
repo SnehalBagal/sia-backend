@@ -160,6 +160,12 @@ setNotificationCount(res.data.count);
 
         <Link to="/leave">Leave Management</Link>
 
+        <Link to="/events"
+        Style={{ colour: "white"}}
+        >
+          Event
+        </Link>
+
         <button
   onClick={logout}
   style={{

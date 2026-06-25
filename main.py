@@ -766,3 +766,24 @@ def today_events(db: Session = Depends(get_db)):
     return db.query(Event).filter(
         Event.event_date == today
     ).all()       
+
+@app.get("/events")
+def get_events(
+    db: Session = Depends(get_db)
+):
+    return db.query(Event).all()
+
+@app.delete("/events/{event_id}")
+def delete_event(
+    event_id: int,
+    db: Session = Depends(get_db)
+):
+    event = db.query(Event).filter(Event.id == event_id).first()
+
+    if not event:
+        return {"message": "Event not found"}
+
+    db.delete(event)
+    db.commit()
+
+    return {"message": "Event deleted"}       
