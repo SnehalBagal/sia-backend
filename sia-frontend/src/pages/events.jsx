@@ -16,7 +16,7 @@ export default function Events() {
 
   const fetchEvents = async () => {
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/events"
+      "https://https://sia-backend-khcp.onrender.com/events"
     );
 
     setEvents(Array.isArray(res.data) ? res.data : []);
@@ -24,7 +24,7 @@ export default function Events() {
 
   const createEvent = async () => {
     await axios.post(
-      "https://sia-backend-production-4dcd.up.railway.app/events",
+      "https://https://sia-backend-khcp.onrender.com/events",
       {
         title,
         event_date: eventDate,
@@ -48,7 +48,7 @@ export default function Events() {
     if (!window.confirm("Delete event?")) return;
 
     await axios.delete(
-      "https://sia-backend-production-4dcd.up.railway.app/events/" +
+      "https://https://sia-backend-khcp.onrender.com/events/" +
         eventId
     );
 
