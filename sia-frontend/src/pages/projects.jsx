@@ -19,7 +19,7 @@ export default function Projects() {
 
   const fetchProjects = async () => {
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/projects"
+      "https://https://sia-backend-khcp.onrender.com/projects"
     );
 
     setProjects(Array.isArray(res.data) ? res.data : []);
@@ -29,7 +29,7 @@ export default function Projects() {
     const token = localStorage.getItem("token");
 
     await axios.post(
-      "https://sia-backend-production-4dcd.up.railway.app/create-project",
+      "https://https://sia-backend-khcp.onrender.com/create-project",
       {
   project_name: projectName,
   description: "",
@@ -56,7 +56,7 @@ export default function Projects() {
     if (!window.confirm("Delete project?")) return;
 
     await axios.delete(
-      "https://sia-backend-production-4dcd.up.railway.app/projects/" +
+      "https://https://sia-backend-khcp.onrender.com/projects/" +
         projectId
     );
 
