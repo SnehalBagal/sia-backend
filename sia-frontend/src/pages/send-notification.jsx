@@ -18,7 +18,7 @@ export default function SendNotification() {
     console.log("Notification payload:", payload);
 
     await axios.post(
-      "https://sia-backend-production-4dcd.up.railway.app/notifications",
+      "https://https://sia-backend-khcp.onrender.com/notifications",
       payload
     );
 
