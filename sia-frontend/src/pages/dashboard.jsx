@@ -25,7 +25,7 @@ export default function Dashboard() {
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        "https://sia-backend-production-4dcd.up.railway.app/tasks"
+        "https://https://sia-backend-khcp.onrender.com/tasks"
       );
 
       if (Array.isArray(res.data)) {
@@ -67,7 +67,7 @@ const fetchTodayEvents = async () => {
   try {
 
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/today-events"
+      "https://https://sia-backend-khcp.onrender.com/today-events"
     );
 
     if (res.data.length > 0) {
@@ -98,7 +98,7 @@ const fetchPopupEvents = async () => {
     const username = localStorage.getItem("username");
 
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/popup-events/" +
+      "https://https://sia-backend-khcp.onrender.com/popup-events/" +
         username
     );
 
@@ -174,7 +174,7 @@ const fetchPopupEvents = async () => {
 
           for (const event of popupEvents) {
             await axios.post(
-              "https://sia-backend-production-4dcd.up.railway.app/events/" +
+              "https://https://sia-backend-khcp.onrender.com/events/" +
                 event.id +
                 "/seen/" +
                 username
