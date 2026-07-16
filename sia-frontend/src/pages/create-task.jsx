@@ -19,7 +19,7 @@ export default function CreateTask() {
 
 const fetchProjects = async () => {
   const res = await axios.get(
-    "https://sia-backend-production-4dcd.up.railway.app/projects"
+    "https://https://sia-backend-khcp.onrender.com/projects"
   );
 
   setProjects(res.data);
@@ -32,7 +32,7 @@ const fetchProjects = async () => {
     const token = localStorage.getItem("token");
 
     await axios.post(
-      "https://sia-backend-production-4dcd.up.railway.app/create-task",
+      "https://https://sia-backend-khcp.onrender.com/create-task",
       {
         title,
         description,
