@@ -839,3 +839,4 @@ def mark_event_seen(
     db.commit()
 
     return {"message": "Event marked seen"}        
+# CORS updated for Render
