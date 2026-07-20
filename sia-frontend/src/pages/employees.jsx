@@ -28,7 +28,7 @@ export default function Employees() {
   const fetchEmployees = async () => {
   try {
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/all-employees"
+      "https://sia-backend-khcp.onrender.com/all-employees"
     );
 
     console.log("EMPLOYEES DATA:", res.data);
@@ -46,7 +46,7 @@ export default function Employees() {
       const token = localStorage.getItem("token");
 
      await axios.post(
-  "https://sia-backend-production-4dcd.up.railway.app/employees",
+  "https://sia-backend-khcp.onrender.com/employees",
   formData,
   {
     headers: {
@@ -71,7 +71,7 @@ export default function Employees() {
     const token = localStorage.getItem("token");
 
     const url =
-      "https://sia-backend-production-4dcd.up.railway.app/employees/" +
+      "https://sia-backend-khcp.onrender.com/employees/" +
       employeeId +
       "/inactive";
 
@@ -105,7 +105,7 @@ const makeActive = async (employeeId) => {
     const token = localStorage.getItem("token");
 
     const url =
-      "https://sia-backend-production-4dcd.up.railway.app/employees/" +
+      "https://sia-backend-khcp.onrender.com/employees/" +
       employeeId +
       "/active";
 
@@ -142,7 +142,7 @@ const updateEmployee = async () => {
   };
   console.log(dataToSend);
   await axios.put(
-    `https://sia-backend-production-4dcd.up.railway.app/employees/${editingId}`,
+    `https://sia-backend-khcp.onrender.com/employees/${editingId}`,
     dataToSend,
     {
       headers: {
@@ -167,7 +167,7 @@ const deleteEmployee = async (employeeId) => {
   const token = localStorage.getItem("token");
 
   const url =
-    "https://sia-backend-production-4dcd.up.railway.app/employees/" +
+    "https://sia-backend-khcp.onrender.com/employees/" +
     employeeId;
 
   await axios.delete(

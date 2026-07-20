@@ -22,7 +22,7 @@ export default function Leave() {
   const fetchLeaves = async () => {
     try {
       const res = await axios.get(
-        "https://sia-backend-production-4dcd.up.railway.app/leaves/" + username
+        "https://sia-backend-khcp.onrender.com/leaves/" + username
       );
 
       setLeaves(Array.isArray(res.data) ? res.data : []);
@@ -34,7 +34,7 @@ export default function Leave() {
   const applyLeave = async () => {
     try {
       await axios.post(
-        "https://sia-backend-production-4dcd.up.railway.app/apply-leave",
+        "https://sia-backend-khcp.onrender.com/apply-leave",
         {
           username: username,
           leave_type: formData.leave_type,
@@ -63,7 +63,7 @@ export default function Leave() {
   const updateStatus = async (leaveId, status) => {
     try {
       await axios.put(
-        "https://sia-backend-production-4dcd.up.railway.app/leave/" +
+        "https://sia-backend-khcp.onrender.com/leave/" +
           leaveId +
           "/status",
         {

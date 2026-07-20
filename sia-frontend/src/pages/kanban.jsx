@@ -11,7 +11,7 @@ export default function Kanban() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("https://sia-backend-production-4dcd.up.railway.app/tasks");
+      const res = await axios.get("https://sia-backend-khcp.onrender.com/tasks");
       setTasks(res.data);
     } catch (err) {
       console.log(err);
@@ -25,7 +25,7 @@ export default function Kanban() {
     const token = localStorage.getItem("token");
 
     const url =
-      "https://sia-backend-production-4dcd.up.railway.app/update-task-status/" +
+      "https://sia-backend-khcp.onrender.com/update-task-status/" +
       taskId +
       "?status=" +
       status;

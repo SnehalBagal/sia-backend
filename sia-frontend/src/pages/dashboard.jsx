@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
+import Confetti from "react-confetti";
 
 
 
@@ -25,7 +26,7 @@ export default function Dashboard() {
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        "https://sia-backend-production-4dcd.up.railway.app/tasks"
+        "https://sia-backend-khcp.onrender.com/tasks"
       );
 
       if (Array.isArray(res.data)) {
@@ -67,7 +68,7 @@ const fetchTodayEvents = async () => {
   try {
 
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/today-events"
+      "https://sia-backend-khcp.onrender.com/today-events"
     );
 
     if (res.data.length > 0) {
@@ -98,7 +99,7 @@ const fetchPopupEvents = async () => {
     const username = localStorage.getItem("username");
 
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/popup-events/" +
+      "https://sia-backend-khcp.onrender.com/popup-events/" +
         username
     );
 
@@ -142,31 +143,77 @@ const fetchPopupEvents = async () => {
         boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
       }}
     >
-      <h2>🔔 Today's Events</h2>
-
       {popupEvents.map((event) => (
-        <div
-          key={event.id}
-          style={{
-            borderBottom: "1px solid #ddd",
-            padding: "10px 0"
-          }}
-        >
-          <h3>
-            {event.event_type === "Birthday" && "🎂 "}
-            {event.event_type === "Meeting" && "📅 "}
-            {event.event_type === "Festival" && "🎉 "}
-            {event.event_type === "Office Announcement" && "📢 "}
-            {event.event_type === "Training" && "🎓 "}
-            {event.event_type === "Urgent Notice" && "⚠️ "}
-            {event.event_type === "Work Anniversary" && "🥳 "}
-            {event.title}
-          </h3>
+        <div key={event.id}>
+          {event.event_type === "Birthday" ? (
+            <div
+              style={{
+                background:
+                  "linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb)",
+                borderRadius: "20px",
+                padding: "30px",
+                color: "#333"
+              }}
+            >
+              <Confetti
+                recycle={false}
+                numberOfPieces={350}
+                width={window.innerWidth}
+                height={window.innerHeight}
+              />
 
-          <p>{event.description}</p>
-          <small>{event.event_date}</small>
+              <h1 style={{ marginBottom: "10px" }}>
+                🎉 HAPPY BIRTHDAY 🎉
+              </h1>
+
+              <h2 style={{ marginBottom: "15px" }}>
+                🎂 {event.title} 🎂
+              </h2>
+
+              <p style={{ fontSize: "18px", lineHeight: 1.6 }}>
+                Wishing you a wonderful birthday filled with happiness,
+                success, and lots of joy!
+              </p>
+
+              <div style={{ fontSize: "45px", marginTop: "20px" }}>
+                🎂 🎁 🎉 🥳 🎈 🎊
+              </div>
+            </div>
+          ) : (
+            <div
+              style={{
+                textAlign: "left",
+                padding: "20px"
+              }}
+            >
+              <h2 style={{ textAlign: "center" }}>
+                {event.event_type}
+              </h2>
+
+              <h3 style={{ textAlign: "center" }}>
+                {event.title}
+              </h3>
+
+              <p style={{ marginTop: "15px" }}>
+                {event.description}
+              </p>
+
+              <p
+                style={{
+                  marginTop: "10px",
+                  fontSize: "14px",
+                  color: "#555",
+                  textAlign: "center"
+                }}
+              >
+                📅 {event.event_date}
+              </p>
+            </div>
+          )}
         </div>
       ))}
+
+      
 
       <button
         onClick={async () => {
@@ -174,7 +221,7 @@ const fetchPopupEvents = async () => {
 
           for (const event of popupEvents) {
             await axios.post(
-              "https://sia-backend-production-4dcd.up.railway.app/events/" +
+              "https://sia-backend-khcp.onrender.com/events/" +
                 event.id +
                 "/seen/" +
                 username
@@ -194,7 +241,7 @@ const fetchPopupEvents = async () => {
           cursor: "pointer"
         }}
       >
-        OK, Got it
+        🎉 Close Greeting
       </button>
     </div>
   </div>

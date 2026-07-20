@@ -22,7 +22,7 @@ export default function Tasks() {
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      "https://sia-backend-production-4dcd.up.railway.app/tasks",
+      "https://sia-backend-khcp.onrender.com/tasks",
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -52,7 +52,7 @@ const fetchComments = async (taskId) => {
   try {
 
     const res = await axios.get(
-      `https://sia-backend-production-4dcd.up.railway.app/task-comments/${taskId}`
+      `https://sia-backend-khcp.onrender.com/task-comments/${taskId}`
     );
 
     setComments((prev) => ({
@@ -70,7 +70,7 @@ const fetchComments = async (taskId) => {
 const addComment = async (taskId) => {
   try {
     await axios.post(
-  "https://sia-backend-production-4dcd.up.railway.app/add-comment",
+  "https://sia-backend-khcp.onrender.com/add-comment",
   {
     task_id: taskId,
     comment: newComments[taskId],
@@ -95,7 +95,7 @@ const deleteTask = async (taskId) => {
   if (!window.confirm("Delete task?")) return;
 
   await axios.delete(
-    "https://sia-backend-production-4dcd.up.railway.app/tasks/" +
+    "https://sia-backend-khcp.onrender.com/tasks/" +
       taskId
   );
 

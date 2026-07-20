@@ -16,7 +16,7 @@ export default function Notifications() {
     const username = localStorage.getItem("username");
 
     const url =
-      "https://sia-backend-production-4dcd.up.railway.app/notifications/" +
+      "https://sia-backend-khcp.onrender.com/notifications/" +
       username;
 
     const res = await axios.get(url);
@@ -24,7 +24,7 @@ export default function Notifications() {
     setNotifications(res.data);
 
     await axios.put(
-    "https://sia-backend-production-4dcd.up.railway.app/notifications/" +
+    "https://sia-backend-khcp.onrender.com/notifications/" +
     username +
     "/mark-read"
   );

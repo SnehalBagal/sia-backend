@@ -25,7 +25,7 @@ export default function Attendance() {
 const username = localStorage.getItem("username");
 
 const res = await axios.get(
-  "https://sia-backend-production-4dcd.up.railway.app/attendance/" + username,
+  "https://sia-backend-khcp.onrender.com/attendance/" + username,
   {
     headers: {
       Authorization: `Bearer ${token}`
@@ -55,7 +55,7 @@ const res = await axios.get(
     console.log("USERNAME =", username);
 
     const url =
-      "https://sia-backend-production-4dcd.up.railway.app/login-time/" +
+      "https://sia-backend-khcp.onrender.com/login-time/" +
       username;
 
     console.log(url);
@@ -81,7 +81,7 @@ const res = await axios.get(
     const username = localStorage.getItem("username");
 
     await axios.put(
-      `https://sia-backend-production-4dcd.up.railway.app/logout-time/${username}`
+      `https://sia-backend-khcp.onrender.com/logout-time/${username}`
     );
 
     alert("Logout time saved");
@@ -102,7 +102,7 @@ const updateWorkReport = async (attendanceId, workReport) => {
   const token = localStorage.getItem("token");
 
   await axios.put(
-    "https://sia-backend-production-4dcd.up.railway.app/attendance-work/${attendanceId}",
+    "https://sia-backend-khcp.onrender.com/attendance-work/${attendanceId}",
     null,
     {
       params: {
