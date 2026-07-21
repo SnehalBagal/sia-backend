@@ -65,9 +65,10 @@ def home():
 
 
 @app.post("/login")
-def login(data: LoginRequest):
-
-    db: Session = SessionLocal()
+def login(
+    data: LoginRequest,
+    db: Session = Depends(get_db)
+):
 
     employee = db.query(Employee).filter(
         Employee.username == data.username
