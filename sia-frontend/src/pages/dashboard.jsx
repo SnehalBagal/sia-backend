@@ -60,33 +60,7 @@ const completedTasks = Array.isArray(tasks)
     ).length
   : 0;
 
-useEffect(() => {
-  fetchTodayEvents();
-}, []);
 
-const fetchTodayEvents = async () => {
-  try {
-
-    const res = await axios.get(
-      "https://sia-backend-khcp.onrender.com/today-events"
-    );
-
-    if (res.data.length > 0) {
-
-      alert(
-        res.data
-          .map(
-            e => `${e.event_type}: ${e.title}`
-          )
-          .join("\n")
-      );
-
-    }
-
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 const [popupEvents, setPopupEvents] = useState([]);
 const [showEventPopup, setShowEventPopup] = useState(false);
