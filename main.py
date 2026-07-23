@@ -396,6 +396,24 @@ def get_attendance(
     ).all()
 
 
+@app.delete("/attendance/{attendance_id}")
+def delete_attendance(
+    attendance_id: int,
+    db: Session = Depends(get_db)
+):
+    attendance = db.query(Attendance).filter(
+        Attendance.id == attendance_id
+    ).first()
+
+    if not attendance:
+        return {"message": "Attendance record not found"}
+
+    db.delete(attendance)
+    db.commit()
+
+    return {"message": "Attendance deleted successfully"}   
+
+
 @app.post("/employees")
 def create_employee_new(
     data: EmployeeCreate,
