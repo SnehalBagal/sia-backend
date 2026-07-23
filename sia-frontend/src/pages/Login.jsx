@@ -30,14 +30,13 @@ export default function Login() {
       localStorage.setItem("username", res.data.user);
       localStorage.setItem("role", res.data.role);
 
+      await axios.post(
+        `https://sia-backend-khcp.onrender.com/login-time/${res.data.user}`
+      );
+
       console.log(res.data);
 
-      localStorage.setItem(
-        "token",
-        res.data.access_token
-      );
-localStorage.setItem("username", res.data.user);
-localStorage.setItem("role", res.data.role);
+      
 
 
       alert("Login Successful");

@@ -20,6 +20,9 @@ from app.auth import (
     admin_required
 )
 from datetime import date
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
 
 from app.database.db import SessionLocal
 from app.database.db import SessionLocal, engine, Base
@@ -305,10 +308,11 @@ def login_time(
     username: str,
     db: Session = Depends(get_db)
 ):
+    india_time = datetime.now(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
 
     attendance = Attendance(
         username=username,
-        login_time=datetime.now()
+        login_time=india_time
     )
 
     db.add(attendance)
@@ -327,7 +331,6 @@ def logout_time(
     username: str,
     db: Session = Depends(get_db)
 ):
-
     attendance = db.query(Attendance).filter(
         Attendance.username == username,
         Attendance.logout_time == None
@@ -338,10 +341,13 @@ def logout_time(
     if not attendance:
         return {"message": "No active login found"}
 
-    attendance.logout_time = datetime.now()
+    india_time = datetime.now(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
+
+    attendance.logout_time = india_time
 
     if attendance.login_time and attendance.logout_time:
         diff = attendance.logout_time - attendance.login_time
+
         attendance.total_hours = round(
             diff.total_seconds() / 3600,
             2
