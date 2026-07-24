@@ -399,8 +399,15 @@ def get_attendance(
 @app.delete("/attendance/{attendance_id}")
 def delete_attendance(
     attendance_id: int,
+    current_user: Employee = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    if current_user.role.lower() != "admin":
+        raise HTTPException(
+            status_code=403,
+            detail="Only admin can delete attendance."
+        )
+
     attendance = db.query(Attendance).filter(
         Attendance.id == attendance_id
     ).first()
@@ -411,7 +418,7 @@ def delete_attendance(
     db.delete(attendance)
     db.commit()
 
-    return {"message": "Attendance deleted successfully"}   
+    return {"message": "Attendance deleted successfully"}
 
 
 @app.post("/employees")

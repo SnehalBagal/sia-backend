@@ -4,8 +4,9 @@ import Sidebar from "../components/Sidebar";
 
 export default function Attendance() {
 
+  const role = localStorage.getItem("role");
   const [filterName, setFilterName] = useState("");
-    const [fromDate, setFromDate] = useState("");
+  const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
   const [records, setRecords] = useState([]);
@@ -138,6 +139,29 @@ const filteredRecords = Array.isArray(records)
     })
   : [];
 
+const deleteAttendance = async (attendanceId) => {
+  if (!window.confirm("Are you sure you want to delete this attendance record?")) {
+    return;
+  }
+
+  try {
+    await axios.delete(
+      `https://sia-backend-khcp.onrender.com/attendance/${attendanceId}`
+    );
+
+    alert("Attendance deleted");
+
+    // Remove it immediately from the screen
+    setRecords((prev) =>
+      prev.filter((item) => item.id !== attendanceId)
+    );
+
+  } catch (err) {
+    console.log(err);
+    alert("Failed to delete attendance");
+  }
+};  
+
 
 
   return (
@@ -204,6 +228,7 @@ const filteredRecords = Array.isArray(records)
             <th>Logout Time</th>
             <th>Total Hours</th>
             <th>Daily Work</th>
+            {role === "admin" && <th>Delete</th>}
           </tr>
         </thead>
 
@@ -230,6 +255,23 @@ const filteredRecords = Array.isArray(records)
                   }
                 />
               </td>
+              {role === "admin" && (
+                <td>
+                  <button
+                    onClick={() => deleteAttendance(record.id)}
+                    style={{
+                      border: "none",
+                      background: "transparent",
+                      cursor: "pointer",
+                      fontSize: "20px"
+                    }}
+                    title="Delete attendance"
+                  >
+                    🗑️
+                  </button>
+                </td>
+              )}
+
             </tr>
           ))}
         </tbody>
