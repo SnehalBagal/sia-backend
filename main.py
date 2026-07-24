@@ -916,3 +916,76 @@ def delete_event(event_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Event deleted successfully"}    
+
+
+
+@app.post("/expenses")
+def create_expense(
+    data: ExpenseCreate,
+    db: Session = Depends(get_db)
+):
+
+    expense = Expense(
+        username=data.username,
+        expense_date=data.expense_date,
+        expense_type=data.expense_type,
+        description=data.description,
+        from_location=data.from_location,
+        to_location=data.to_location,
+        total_km=data.total_km,
+        amount=data.amount,
+        remarks=data.remarks,
+        status="Pending"
+    )
+
+    db.add(expense)
+    db.commit()
+    db.refresh(expense)
+
+    return {
+        "message": "Expense added successfully"
+    } 
+
+@app.get("/expenses/{username}")
+def get_expenses(
+    username: str,
+    db: Session = Depends(get_db)
+):
+
+    employee = db.query(Employee).filter(
+        Employee.username == username
+    ).first()
+
+    if not employee:
+        return []
+
+    if employee.role.lower() == "admin":
+        return db.query(Expense).order_by(
+            Expense.expense_date.desc()
+        ).all()
+
+    return db.query(Expense).filter(
+        Expense.username == username
+    ).order_by(
+        Expense.expense_date.desc()
+    ).all()      
+
+@app.delete("/expenses/{expense_id}")
+def delete_expense(
+    expense_id: int,
+    db: Session = Depends(get_db)
+):
+
+    expense = db.query(Expense).filter(
+        Expense.id == expense_id
+    ).first()
+
+    if not expense:
+        return {"message": "Expense not found"}
+
+    db.delete(expense)
+    db.commit()
+
+    return {
+        "message": "Expense deleted successfully"
+    }    
