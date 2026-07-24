@@ -13,6 +13,7 @@ from app.models.task import Task
 from app.schemas.auth import TaskCreate
 from datetime import datetime, date
 from app.schemas.notification import NotificationCreate
+from app.schemas.expense import ExpenseCreate
 from app.models.attendance import Attendance
 from app.auth import (
     create_access_token,
@@ -31,6 +32,7 @@ from app.models.task_comment import TaskComment
 from app.models.event import Event
 from app.models.event_seen import EventSeen
 from app.models.expense import Expense
+
 
 
 
