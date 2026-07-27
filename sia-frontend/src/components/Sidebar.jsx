@@ -179,6 +179,13 @@ setNotificationCount(res.data.count);
           Event
         </Link>
 
+        <Link
+          to="/project-handover"
+          style={{ color: "white" }}
+        >
+          Project Handover
+        </Link>
+
         <button
   onClick={logout}
   style={{

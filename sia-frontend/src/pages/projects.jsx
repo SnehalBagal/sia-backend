@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
+
+
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
@@ -12,6 +15,9 @@ export default function Projects() {
   const [dueDate, setDueDate] = useState("");
   const [status, setStatus] = useState("Discussion");
   const [priority, setPriority] = useState("Medium");
+  const navigate = useNavigate();
+
+
 
   useEffect(() => {
     fetchProjects();
@@ -63,6 +69,16 @@ export default function Projects() {
     alert("Project deleted");
     fetchProjects();
   };
+
+  const completeProject = (project) => {
+
+    navigate("/project-handover", {
+      state: project
+    });
+
+  };
+
+
 
   const tableBox = {
     marginTop: "30px",
@@ -134,7 +150,8 @@ export default function Projects() {
                 <th style={th}>Start Date</th>
                 <th style={th}>Due Date</th>
                 <th style={th}>Status</th>
-                <th style={th}>Priority</th>  
+                <th style={th}>Priority</th>
+                <th style={th}>Complete</th>
                 <th style={th}>Delete</th>
               </tr>
             </thead>
@@ -162,6 +179,23 @@ export default function Projects() {
                       <option>Low</option>
                     </select>
                   </td>
+                  <td style={td}>
+                    <button
+                      onClick={() => completeProject(project)}
+                      style={{
+                        background: "#28a745",
+                        color: "white",
+                        border: "none",
+                        padding: "6px 12px",
+                        borderRadius: "5px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Complete
+                    </button>
+                  </td>
+
+
                   <td style={td}>
   <button
     onClick={() => deleteProject(project.id)}

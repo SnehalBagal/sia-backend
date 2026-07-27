@@ -20,6 +20,7 @@ import Files from './pages/files.jsx';
 import Leave from "./pages/Leave";
 import Events from "./pages/events";
 import Expenses from "./pages/expenses";
+import ProjectHandover from "./pages/project-handover";
 
 ReactDOM.createRoot(
   document.getElementById('root')
@@ -65,6 +66,8 @@ ReactDOM.createRoot(
       <Route path="/events" element={<Events />} />
 
       <Route path="/expenses" element={<Expenses />} />
+
+      <Route path="/project-handover" element={<ProjectHandover />} />
       
 
     </Routes>
