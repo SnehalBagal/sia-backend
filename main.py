@@ -14,6 +14,7 @@ from app.schemas.auth import TaskCreate
 from datetime import datetime, date
 from app.schemas.notification import NotificationCreate
 from app.schemas.expense import ExpenseCreate
+from app.schemas.project_handover import ProjectHandoverCreate
 from app.models.attendance import Attendance
 from app.auth import (
     create_access_token,
@@ -1009,3 +1010,39 @@ def update_expense_status(
     db.commit()
 
     return {"message": "Status updated"}   
+
+@app.post("/project-handover")
+def create_project_handover(
+    data: ProjectHandoverCreate,
+    db: Session = Depends(get_db)
+):
+
+    handover = ProjectHandover(
+        project_name=data.project_name,
+        customer_name=data.customer_name,
+        engineer=data.engineer,
+
+        completion_date=data.completion_date,
+
+        plc_brand=data.plc_brand,
+        plc_model=data.plc_model,
+        plc_ip=data.plc_ip,
+        plc_password=data.plc_password,
+
+        scada_name=data.scada_name,
+        scada_version=data.scada_version,
+        scada_ip=data.scada_ip,
+        scada_password=data.scada_password,
+
+        communication_type=data.communication_type,
+
+        remarks=data.remarks
+    )
+
+    db.add(handover)
+    db.commit()
+    db.refresh(handover)
+
+    return {
+        "message": "Project handover saved successfully"
+    }    
