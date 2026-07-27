@@ -19,6 +19,7 @@ import SendNotification from './pages/send-notification.jsx';
 import Files from './pages/files.jsx';
 import Leave from "./pages/Leave";
 import Events from "./pages/events";
+import Expenses from "./pages/expenses";
 
 ReactDOM.createRoot(
   document.getElementById('root')
@@ -62,6 +63,8 @@ ReactDOM.createRoot(
       <Route path="/leave" element={<Leave />} />
 
       <Route path="/events" element={<Events />} />
+
+      <Route path="/expenses" element={<Expenses />} />
       
 
     </Routes>

@@ -32,6 +32,7 @@ from app.models.task_comment import TaskComment
 from app.models.event import Event
 from app.models.event_seen import EventSeen
 from app.models.expense import Expense
+from app.models.project_handover import ProjectHandover
 
 
 
@@ -989,3 +990,22 @@ def delete_expense(
     return {
         "message": "Expense deleted successfully"
     }    
+
+@app.put("/expenses/{expense_id}/status")
+def update_expense_status(
+    expense_id: int,
+    status: str,
+    db: Session = Depends(get_db)
+):
+    expense = db.query(Expense).filter(
+        Expense.id == expense_id
+    ).first()
+
+    if not expense:
+        return {"message": "Expense not found"}
+
+    expense.status = status
+
+    db.commit()
+
+    return {"message": "Status updated"}   

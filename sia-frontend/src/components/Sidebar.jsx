@@ -158,7 +158,20 @@ setNotificationCount(res.data.count);
           Send Notification
         </Link>
 
-        <Link to="/leave">Leave Management</Link>
+        <Link
+          to="/leave"
+          style={{ color: "white" }}
+        >
+          Leave Management
+        </Link>
+
+        <Link
+          to="/expenses"
+          style={{ color: "white" }}
+        >
+          Expenses
+        </Link>
+
 
         <Link to="/events"
         Style={{ colour: "white"}}
