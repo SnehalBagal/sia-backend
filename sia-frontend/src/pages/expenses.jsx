@@ -15,7 +15,7 @@ export default function Expenses() {
   const [amount, setAmount] = useState("");
   const [remarks, setRemarks] = useState("");
   const username = localStorage.getItem("username");
-  const role = localStorage.getItem("role");
+  
   const role = localStorage.getItem("role");
 
   useEffect(() => {

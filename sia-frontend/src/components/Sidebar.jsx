@@ -173,11 +173,13 @@ setNotificationCount(res.data.count);
         </Link>
 
 
-        <Link to="/events"
-        Style={{ colour: "white"}}
+        <Link
+          to="/events"
+          style={{ color: "white" }}
         >
           Event
         </Link>
+
 
         <Link
           to="/project-handover"
