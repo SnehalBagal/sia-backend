@@ -34,6 +34,7 @@ from app.models.event import Event
 from app.models.event_seen import EventSeen
 from app.models.expense import Expense
 from app.models.project_handover import ProjectHandover
+from sqlalchemy import func
 
 
 
