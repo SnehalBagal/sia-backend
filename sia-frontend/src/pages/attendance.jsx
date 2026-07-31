@@ -145,13 +145,19 @@ const deleteAttendance = async (attendanceId) => {
   }
 
   try {
+    const token = localStorage.getItem("token");
+
     await axios.delete(
-      `https://sia-backend-khcp.onrender.com/attendance/${attendanceId}`
+      `https://sia-backend-khcp.onrender.com/attendance/${attendanceId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     alert("Attendance deleted");
 
-    // Remove it immediately from the screen
     setRecords((prev) =>
       prev.filter((item) => item.id !== attendanceId)
     );
