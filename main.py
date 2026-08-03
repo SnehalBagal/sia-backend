@@ -26,7 +26,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 
-from app.database.db import SessionLocal
+
 from app.database.db import SessionLocal, engine, Base
 from sqlalchemy import Column, Integer, String, Text, DateTime
 from app.models.task_comment import TaskComment
@@ -34,6 +34,7 @@ from app.models.event import Event
 from app.models.event_seen import EventSeen
 from app.models.expense import Expense
 from app.models.project_handover import ProjectHandover
+from app.models.project_report import ProjectReport
 from sqlalchemy import func
 
 
