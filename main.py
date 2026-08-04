@@ -1081,7 +1081,7 @@ def create_project_handover(
 
 from sqlalchemy import text
 
-@app.get("/debug/tables")
-def debug_tables(db: Session = Depends(get_db)):
-    result = db.execute(text("SHOW TABLES"))
-    return [row[0] for row in result]   
+@app.get("/debug/project-handover-columns")
+def project_handover_columns(db: Session = Depends(get_db)):
+    result = db.execute(text("SHOW COLUMNS FROM project_handover"))
+    return [dict(row._mapping) for row in result]
