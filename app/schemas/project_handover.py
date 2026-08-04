@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import date
+from typing import Optional
 
 
 class ProjectHandoverCreate(BaseModel):
@@ -7,25 +8,27 @@ class ProjectHandoverCreate(BaseModel):
     customer_name: str
     engineer: str
 
-    completion_date: date
+    completion_date: Optional[date] = None
 
     plc_brand: str
     plc_model: str
     plc_ip: str
     plc_password: str
-    plc_cpu_part_number: str | None = None
-    plc_firmware_version: str | None = None
-    rack_slot: str | None = None
-    plc_serial_number: str | None = None
 
-    scada_name: str
-    scada_version: str
-    scada_ip: str
-    scada_password: str
-    communication_type: str
-    remarks: str
-    commissioning_problem: str | None = None
-    solution: str | None = None
-    pending_work: str | None = None
-    engineer_notes: str | None = None
-    customer_notes: str | None = None
+    plc_cpu_part_number: Optional[str] = None
+    plc_firmware_version: Optional[str] = None
+    rack_slot: Optional[str] = None
+    plc_serial_number: Optional[str] = None
+
+    scada_name: Optional[str] = None
+    scada_version: Optional[str] = None
+    scada_ip: Optional[str] = None
+    scada_password: Optional[str] = None
+    communication_type: Optional[str] = None
+    remarks: Optional[str] = None
+
+    commissioning_problem: Optional[str] = None
+    solution: Optional[str] = None
+    pending_work: Optional[str] = None
+    engineer_notes: Optional[str] = None
+    customer_notes: Optional[str] = None
