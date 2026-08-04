@@ -1080,6 +1080,7 @@ def create_project_handover(
 
 
 from sqlalchemy import text
+print("Loading update-project-handover route...")
 
 @app.get("/debug/update-project-handover")
 def update_project_handover(db: Session = Depends(get_db)):
