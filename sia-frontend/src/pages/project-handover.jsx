@@ -30,7 +30,7 @@ export default function ProjectHandover() {
     const token = localStorage.getItem("token");
 
     await axios.post(
-      "https://sia-backend-khcp.onrender.com/project-handover",
+      "https://sia-backend-khcp.onrender.com/create-project-handover",
       {
         project_name: projectName,
         customer_name: customerName,

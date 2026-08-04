@@ -68,6 +68,8 @@ ReactDOM.createRoot(
       <Route path="/expenses" element={<Expenses />} />
 
       <Route path="/project-handover" element={<ProjectHandover />} />
+
+      <Route path="/project-handover-list" element={<ProjectHandoverList />} />
       
 
     </Routes>

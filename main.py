@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+from fastapi import HTTPException
 
 
 from app.database.db import SessionLocal
@@ -1101,3 +1102,51 @@ def update_project_handover(db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Table Updated Successfully"}
+
+@app.get("/project-handover")
+def get_project_handovers(db: Session = Depends(get_db)):
+    return db.query(ProjectHandover).order_by(ProjectHandover.id.desc()).all()   
+
+
+@app.delete("/project-handover/{handover_id}")
+def delete_project_handover(
+    handover_id: int,
+    db: Session = Depends(get_db)
+):
+    handover = (
+        db.query(ProjectHandover)
+        .filter(ProjectHandover.id == handover_id)
+        .first()
+    )
+
+    if not handover:
+        raise HTTPException(status_code=404, detail="Record not found")
+
+    db.delete(handover)
+    db.commit()
+
+    return {"message": "Deleted Successfully"}   
+
+
+@app.put("/project-handover/{handover_id}")
+def update_project_handover(
+    handover_id: int,
+    data: ProjectHandoverCreate,
+    db: Session = Depends(get_db)
+):
+    handover = (
+        db.query(ProjectHandover)
+        .filter(ProjectHandover.id == handover_id)
+        .first()
+    )
+
+    if not handover:
+        raise HTTPException(status_code=404, detail="Not Found")
+
+    for key, value in data.dict().items():
+        setattr(handover, key, value)
+
+    db.commit()
+    db.refresh(handover)
+
+    return {"message": "Updated Successfully"}   
