@@ -1043,6 +1043,10 @@ def create_project_handover(
         plc_model=data.plc_model,
         plc_ip=data.plc_ip,
         plc_password=data.plc_password,
+        plc_cpu_part_number=data.plc_cpu_part_number,
+        plc_firmware_version=data.plc_firmware_version,
+        rack_slot=data.rack_slot,
+        plc_serial_number=data.plc_serial_number,
 
         scada_name=data.scada_name,
         scada_version=data.scada_version,
@@ -1052,6 +1056,17 @@ def create_project_handover(
         communication_type=data.communication_type,
 
         remarks=data.remarks
+        commissioning_problem=data.commissioning_problem,
+
+        solution=data.solution,
+
+        pending_work=data.pending_work,
+
+        engineer_notes=data.engineer_notes,
+
+        customer_notes=data.customer_notes,
+
+
     )
 
     db.add(handover)

@@ -8,6 +8,69 @@ export default function ProjectHandover() {
   const [customerName, setCustomerName] = useState("");
   const [engineer, setEngineer] = useState(localStorage.getItem("username"));
   const [completionDate, setCompletionDate] = useState("");
+  const [commissioningProblem, setCommissioningProblem] = useState("");
+  const [solution, setSolution] = useState("");
+  const [pendingWork, setPendingWork] = useState("");
+  const [engineerNotes, setEngineerNotes] = useState("");
+  const [customerNotes, setCustomerNotes] = useState("");
+  const [plcBrand, setPlcBrand] = useState("");
+  const [plcModel, setPlcModel] = useState("");
+  const [plcIp, setPlcIp] = useState("");
+  const [plcPassword, setPlcPassword] = useState("");
+  const [plcCpuPartNumber, setPlcCpuPartNumber] = useState("");
+  const [plcFirmwareVersion, setPlcFirmwareVersion] = useState("");
+  const [rackSlot, setRackSlot] = useState("");
+  const [plcSerialNumber, setPlcSerialNumber] = useState("");
+
+
+  const saveProjectHandover = async () => {
+
+  try {
+
+    const token = localStorage.getItem("token");
+
+    await axios.post(
+      "https://sia-backend-khcp.onrender.com/create-project-handover",
+      {
+        project_name: projectName,
+        customer_name: customerName,
+        engineer: engineer,
+        completion_date: completionDate,
+        plc_brand: plcBrand,
+        plc_model: plcModel,
+        plc_ip: plcIp,
+        plc_password: plcPassword,
+        plc_cpu_part_number: plcCpuPartNumber,
+        plc_firmware_version: plcFirmwareVersion,
+        rack_slot: rackSlot,
+        plc_serial_number: plcSerialNumber,
+
+        commissioning_problem: commissioningProblem,
+        solution: solution,
+        pending_work: pendingWork,
+        engineer_notes: engineerNotes,
+        customer_notes: customerNotes
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    alert("Project Handover Saved");
+
+  } catch (err) {
+
+    console.log(err);
+
+    alert("Failed to Save");
+
+  }
+
+};
+
+
 
   return (
     <div>
@@ -80,7 +143,11 @@ export default function ProjectHandover() {
             }}
           >
 
-            <select style={{ width: "220px" }}>
+            <select
+              style={{ width: "220px" }}
+              value={plcBrand}
+              onChange={(e) => setPlcBrand(e.target.value)}
+            >
               <option>Siemens</option>
               <option>Allen Bradley</option>
               <option>Mitsubishi</option>
@@ -91,19 +158,54 @@ export default function ProjectHandover() {
               <option>Other</option>
             </select>
 
-            <input style={{ width: "220px" }} placeholder="PLC Model" />
+            <input
+              style={{ width: "220px" }}
+              placeholder="PLC Model"
+              value={plcModel}
+              onChange={(e) => setPlcModel(e.target.value)}
+            />
 
-            <input style={{ width: "220px" }} placeholder="PLC IP Address" />
+            <input
+              style={{ width: "220px" }}
+              placeholder="PLC IP Address"
+              value={plcIp}
+              onChange={(e) => setPlcIp(e.target.value)}
+            />
 
-            <input style={{ width: "220px" }} placeholder="PLC Password" />
+            <input
+              style={{ width: "220px" }}
+              placeholder="PLC Password"
+              value={plcPassword}
+              onChange={(e) => setPlcPassword(e.target.value)}
+            />
 
-            <input style={{ width: "220px" }} placeholder="PLC CPU Part Number" />
+            <input
+              style={{ width: "220px" }}
+              placeholder="PLC CPU Part Number"
+              value={plcCpuPartNumber}
+              onChange={(e) => setPlcCpuPartNumber(e.target.value)}
+            />
 
-            <input style={{ width: "220px" }} placeholder="PLC Firmware Version" />
+            <input
+              style={{ width: "220px" }}
+              placeholder="PLC Firmware Version"
+              value={plcFirmwareVersion}
+              onChange={(e) => setPlcFirmwareVersion(e.target.value)}
+            />
 
-            <input style={{ width: "220px" }} placeholder="Rack / Slot" />
+            <input
+              style={{ width: "220px" }}
+              placeholder="Rack / Slot"
+              value={rackSlot}
+              onChange={(e) => setRackSlot(e.target.value)}
+            />
 
-            <input style={{ width: "220px" }} placeholder="PLC Serial Number" />
+            <input
+              style={{ width: "220px" }}
+              placeholder="PLC Serial Number"
+              value={plcSerialNumber}
+              onChange={(e) => setPlcSerialNumber(e.target.value)}
+            />
 
           </div>
         </div>   {/* PLC Card Ends */}
@@ -244,6 +346,103 @@ export default function ProjectHandover() {
           <input placeholder="DNS Server" />
 
         </div>   {/* Network Ends */}
+
+          <div
+            style={{
+              border: "1px solid #ddd",
+              padding: "20px",
+              borderRadius: "10px",
+              marginTop: "20px"
+            }}
+          >
+
+          <h2>Commissioning Report</h2>
+
+          <h4>Problem Found During Commissioning</h4>
+
+          <textarea
+            value={commissioningProblem}
+            onChange={(e)=>setCommissioningProblem(e.target.value)}
+            rows={5}
+            style={{
+              width:"100%",
+              marginBottom:"20px"
+            }}
+          />
+
+          <h4>Solution Provided</h4>
+
+          <textarea
+            value={solution}
+            onChange={(e)=>setSolution(e.target.value)}
+            rows={5}
+            style={{
+              width:"100%",
+              marginBottom:"20px"
+            }}
+          />
+
+          <h4>Pending Work</h4>
+
+          <textarea
+            value={pendingWork}
+            onChange={(e)=>setPendingWork(e.target.value)}
+            rows={5}
+            style={{
+              width:"100%",
+              marginBottom:"20px"
+            }}
+          />
+
+          <h4>Engineer Notes</h4>
+
+          <textarea
+            value={engineerNotes}
+            onChange={(e)=>setEngineerNotes(e.target.value)}
+            rows={6}
+            style={{
+              width:"100%",
+              marginBottom:"20px"
+            }}
+          />
+
+          <h4>Customer Notes</h4>
+
+          <textarea
+            value={customerNotes}
+            onChange={(e)=>setCustomerNotes(e.target.value)}
+            rows={6}
+            style={{
+              width:"100%"
+            }}
+          />
+
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "30px"
+            }}
+          >
+
+          <button
+            onClick={saveProjectHandover}
+            style={{
+              background: "#28a745",
+              color: "white",
+              padding: "12px 25px",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "16px"
+            }}
+          >
+            Save Project Handover
+          </button>
+
+          </div>
+
+          </div>
+
 
       </div>
 
