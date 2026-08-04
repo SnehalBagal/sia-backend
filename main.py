@@ -1081,7 +1081,22 @@ def create_project_handover(
 
 from sqlalchemy import text
 
-@app.get("/debug/project-handover-columns")
-def project_handover_columns(db: Session = Depends(get_db)):
-    result = db.execute(text("SHOW COLUMNS FROM project_handover"))
-    return [dict(row._mapping) for row in result]
+@app.get("/debug/update-project-handover")
+def update_project_handover(db: Session = Depends(get_db)):
+
+    db.execute(text("""
+        ALTER TABLE project_handover
+        ADD COLUMN plc_cpu_part_number VARCHAR(100),
+        ADD COLUMN plc_firmware_version VARCHAR(100),
+        ADD COLUMN rack_slot VARCHAR(100),
+        ADD COLUMN plc_serial_number VARCHAR(100),
+        ADD COLUMN commissioning_problem TEXT,
+        ADD COLUMN solution TEXT,
+        ADD COLUMN pending_work TEXT,
+        ADD COLUMN engineer_notes TEXT,
+        ADD COLUMN customer_notes TEXT;
+    """))
+
+    db.commit()
+
+    return {"message": "Table Updated Successfully"}
