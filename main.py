@@ -43,6 +43,7 @@ from sqlalchemy import func
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
@@ -585,7 +586,7 @@ class Notification(Base):
     is_read = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.now)
 
-Base.metadata.create_all(bind=engine)
+
 
 
 @app.post("/notifications")
@@ -618,7 +619,7 @@ def get_notifications(
 
 
 
-Base.metadata.create_all(bind=engine)
+
 
 
 @app.delete("/notifications/{notification_id}")
@@ -695,7 +696,7 @@ class LeaveRequest(Base):
     status = Column(String(50), default="Pending")
     applied_at = Column(DateTime, default=datetime.now)
 
-Base.metadata.create_all(bind=engine)      
+    
 
 
 @app.post("/apply-leave")
@@ -1076,3 +1077,11 @@ def create_project_handover(
     return {
         "message": "Project handover saved successfully"
     }    
+
+
+from sqlalchemy import text
+
+@app.get("/debug/tables")
+def debug_tables(db: Session = Depends(get_db)):
+    result = db.execute(text("SHOW TABLES"))
+    return [row[0] for row in result]   

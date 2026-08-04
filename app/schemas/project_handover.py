@@ -22,17 +22,10 @@ class ProjectHandoverCreate(BaseModel):
     scada_version: str
     scada_ip: str
     scada_password: str
-
     communication_type: str
-
     remarks: str
-
     commissioning_problem: str | None = None
-
     solution: str | None = None
-
     pending_work: str | None = None
-
     engineer_notes: str | None = None
-
     customer_notes: str | None = None
