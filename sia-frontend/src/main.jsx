@@ -21,6 +21,8 @@ import Leave from "./pages/Leave";
 import Events from "./pages/events";
 import Expenses from "./pages/expenses";
 import ProjectHandover from "./pages/project-handover";
+import ProjectHandoverList from "./pages/ProjectHandoverList";
+import ProjectHandoverReport from "./pages/ProjectHandoverReport";
 
 ReactDOM.createRoot(
   document.getElementById('root')
@@ -69,7 +71,9 @@ ReactDOM.createRoot(
 
       <Route path="/project-handover" element={<ProjectHandover />} />
 
-      <Route path="/project-handover-list" element={<ProjectHandoverList />} />
+      <Route path="/project-handover-report" element={<ProjectHandoverReport />} />
+
+      
       
 
     </Routes>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function ProjectHandoverList() {
+function ProjectHandoverList({ onEdit }) {
 
     const [records, setRecords] = useState([]);
 
@@ -16,7 +16,11 @@ function ProjectHandoverList() {
         setRecords(res.data);
     };
 
-    
+    const editRecord = (row) => {
+
+        console.log(row);
+
+    };
 
     const deleteRecord = async (id) => {
         if (!window.confirm("Delete this record?")) return;
@@ -71,7 +75,9 @@ function ProjectHandoverList() {
                                 <td>{row.plc_brand}</td>
 
                                 <td>
-                                    <button>Edit</button>
+                                    <button onClick={() => editRecord(row)}>
+                                        Edit
+                                    </button>
 
                                     <button onClick={() => deleteRecord(row.id)}>
                                         Delete

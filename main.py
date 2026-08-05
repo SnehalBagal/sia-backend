@@ -1150,3 +1150,8 @@ def update_project_handover(
     db.refresh(handover)
 
     return {"message": "Updated Successfully"}   
+
+
+@app.get("/projects-list")
+def get_projects_list(db: Session = Depends(get_db)):
+    return db.query(Project).order_by(Project.project_name).all()   
