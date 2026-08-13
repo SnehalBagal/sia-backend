@@ -8,8 +8,10 @@ export default function Attendance() {
   const [filterName, setFilterName] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const [records, setRecords] = useState([]);
+
 
   useEffect(() => {
 
@@ -103,7 +105,7 @@ const updateWorkReport = async (attendanceId, workReport) => {
   const token = localStorage.getItem("token");
 
   await axios.put(
-    "https://sia-backend-khcp.onrender.com/attendance-work/${attendanceId}",
+    `https://sia-backend-khcp.onrender.com/attendance-work/${attendanceId}`,
     null,
     {
       params: {
@@ -140,33 +142,107 @@ const filteredRecords = Array.isArray(records)
   : [];
 
 const deleteAttendance = async (attendanceId) => {
-  if (!window.confirm("Are you sure you want to delete this attendance record?")) {
-    return;
-  }
 
-  try {
-    const token = localStorage.getItem("token");
+    if (!window.confirm("Are you sure you want to delete this attendance record?")) {
+        return;
+    }
 
-    await axios.delete(
-      `https://sia-backend-khcp.onrender.com/attendance/${attendanceId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
 
-    alert("Attendance deleted");
+        const token = localStorage.getItem("token");
 
-    setRecords((prev) =>
-      prev.filter((item) => item.id !== attendanceId)
-    );
+        console.log("TOKEN EXISTS:", !!token);
 
-  } catch (err) {
-    console.log(err);
-    alert("Failed to delete attendance");
-  }
+        await axios.delete(
+            `https://sia-backend-khcp.onrender.com/attendance/${attendanceId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        alert("Attendance deleted");
+
+        setRecords((prev) =>
+            prev.filter((item) => item.id !== attendanceId)
+        );
+
+    } catch (err) {
+
+        console.log("DELETE ERROR:", err.response?.data || err);
+
+        alert("Failed to delete attendance");
+
+    }
 };  
+
+
+const toggleRow = (id) => {
+    setSelectedRows((prev) =>
+        prev.includes(id)
+            ? prev.filter((rowId) => rowId !== id)
+            : [...prev, id]
+    );
+};
+
+const toggleSelectAll = () => {
+
+    if (selectedRows.length === filteredRecords.length) {
+        setSelectedRows([]);
+    } else {
+        setSelectedRows(filteredRecords.map((record) => record.id));
+    }
+
+};
+
+const deleteSelected = async () => {
+
+    if (selectedRows.length === 0) {
+        alert("Please select at least one row");
+        return;
+    }
+
+    if (!window.confirm(
+        `Delete ${selectedRows.length} selected records?`
+    )) {
+        return;
+    }
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        for (const id of selectedRows) {
+
+            await axios.delete(
+                `https://sia-backend-khcp.onrender.com/attendance/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+        }
+
+        alert("Selected records deleted successfully");
+
+        setSelectedRows([]);
+
+        fetchAttendance();
+
+    } catch (err) {
+
+        console.log(
+            "MULTI DELETE ERROR:",
+            err.response?.data || err
+        );
+
+        alert("Failed to delete selected records");
+
+    }
+};
 
 
 
@@ -219,6 +295,24 @@ const deleteAttendance = async (attendanceId) => {
         Logout Time
       </button>
 
+      <button
+        onClick={deleteSelected}
+        disabled={selectedRows.length === 0}
+        style={{
+          marginLeft: "10px",
+          background: selectedRows.length === 0 ? "#ccc" : "#dc3545",
+          color: "white",
+          padding: "10px 15px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: selectedRows.length === 0
+              ? "not-allowed"
+              : "pointer"
+          }}
+      >
+        🗑 Delete Selected ({selectedRows.length})
+      </button>
+
       <table
         border="1"
         cellPadding="10"
@@ -229,6 +323,17 @@ const deleteAttendance = async (attendanceId) => {
       >
         <thead>
           <tr>
+            <th>
+              <input
+                type="checkbox"
+                checked={
+                    records.length > 0 &&
+                    selectedRows.length === records.length
+                }
+                onChange={toggleSelectAll}
+              />
+            </th>
+
             <th>Employee</th>
             <th>Login Time</th>
             <th>Logout Time</th>
@@ -241,6 +346,14 @@ const deleteAttendance = async (attendanceId) => {
         <tbody>
           {filteredRecords.map((record) => (
             <tr key={record.id}>
+
+              <td>
+                <input
+                  type="checkbox"
+                  checked={selectedRows.includes(record.id)}
+                  onChange={() => toggleRow(record.id)}
+                />
+              </td>
               <td>{record.username}</td>
 
               <td>{record.login_time}</td>

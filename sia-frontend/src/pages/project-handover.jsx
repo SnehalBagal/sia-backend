@@ -251,7 +251,19 @@ const loadRecords = async () => {
 
           <select
             value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
+            onChange={(e) => {
+
+              const selectedProject = projects.find(
+                p => p.project_name === e.target.value
+              );
+
+              if (!selectedProject) return;
+
+              setProjectName(selectedProject.project_name);
+
+              setEngineer(selectedProject.assignee);
+
+            }}
           >
 
           <option value="">
