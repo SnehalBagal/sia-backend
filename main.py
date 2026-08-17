@@ -37,10 +37,6 @@ from app.models.expense import Expense
 from app.models.project_handover import ProjectHandover
 from app.models.project_report import ProjectReport
 from sqlalchemy import func
-
-
-
-
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -422,10 +418,10 @@ def get_attendance(
 @app.delete("/attendance/{attendance_id}")
 def delete_attendance(
     attendance_id: int,
-    current_user: Employee = Depends(get_current_user),
+    current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    if current_user.role.lower() != "admin":
+    if current_user["role"].lower() != "admin":
         raise HTTPException(
             status_code=403,
             detail="Only admin can delete attendance."
