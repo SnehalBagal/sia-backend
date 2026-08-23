@@ -11,5 +11,5 @@ class EmployeeCreate(BaseModel):
     department: str
     designation: str
     joining_date: date
-    leaving_date = Column(Date, nullable=True)
+    leaving_date: Optional[date] = None
     

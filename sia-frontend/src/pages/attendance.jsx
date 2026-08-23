@@ -295,23 +295,25 @@ const deleteSelected = async () => {
         Logout Time
       </button>
 
-      <button
-        onClick={deleteSelected}
-        disabled={selectedRows.length === 0}
-        style={{
-          marginLeft: "10px",
-          background: selectedRows.length === 0 ? "#ccc" : "#dc3545",
-          color: "white",
-          padding: "10px 15px",
-          border: "none",
-          borderRadius: "5px",
-          cursor: selectedRows.length === 0
-              ? "not-allowed"
-              : "pointer"
-          }}
-      >
-        🗑 Delete Selected ({selectedRows.length})
-      </button>
+      {role === "admin" && (
+        <button 
+      onClick={deleteSelected}
+      disabled={selectedRows.length === 0}
+      style={{
+        marginLeft: "10px",
+        background: selectedRows.length === 0 ? "#ccc" : "#dc3545",
+        color: "white",
+        padding: "10px 15px",
+        border: "none",
+        borderRadius: "5px",
+        cursor: selectedRows.length === 0
+            ? "not-allowed"
+            : "pointer"
+      }}
+    >
+      🗑 Delete Selected ({selectedRows.length})
+    </button>
+  )}
 
       <table
         border="1"

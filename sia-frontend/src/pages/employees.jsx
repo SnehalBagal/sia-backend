@@ -138,7 +138,8 @@ const updateEmployee = async () => {
 
   const dataToSend = {
     ...formData,
-    password: formData.password || "nochange"
+    password: formData.password || "nochange",
+    leaving_date: formData.leaving_date || null
   };
   console.log(dataToSend);
   await axios.put(
