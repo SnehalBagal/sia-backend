@@ -7,7 +7,8 @@ from app.database.db import SessionLocal
 from app.models.employee import Employee
 from app.security import hash_password, verify_password
 from app.auth import create_access_token, get_current_user
-from app.schemas.auth import LoginRequest, EmployeeCreate
+from app.schemas.auth import LoginRequest
+from app.schemas.employee import EmployeeCreate
 from app.schemas.employee import EmployeeCreate
 from app.models.project import Project
 from app.schemas.auth import ProjectCreate
