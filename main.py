@@ -1,19 +1,16 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+from sqlalchemy import Column, Integer, String, Text, DateTime, func
 
-
-from app.database.db import SessionLocal
 from app.models.employee import Employee
 from app.security import hash_password, verify_password
 from app.auth import create_access_token, get_current_user
-from app.schemas.auth import LoginRequest
-
 from app.schemas.employee import EmployeeCreate
+from app.schemas.project import ProjectCreate
+from app.schemas.task import TaskCreate
 from app.models.project import Project
-from app.schemas.auth import ProjectCreate
 from app.models.task import Task
-from app.schemas.auth import TaskCreate
 from datetime import datetime, date
 from app.schemas.notification import NotificationCreate
 from app.schemas.expense import ExpenseCreate
@@ -27,9 +24,7 @@ from app.auth import (
 from datetime import date
 from datetime import datetime
 from zoneinfo import ZoneInfo
-
-
-
+from app.schemas.login import LoginRequest
 from app.database.db import SessionLocal, engine, Base
 from sqlalchemy import Column, Integer, String, Text, DateTime
 from app.models.task_comment import TaskComment
