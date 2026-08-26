@@ -1,40 +1,40 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
 from sqlalchemy import Column, Integer, String, Text, DateTime, func
 
+from datetime import datetime, date
+from zoneinfo import ZoneInfo
+
+from app.database.db import SessionLocal, engine, Base
+
 from app.models.employee import Employee
-from app.security import hash_password, verify_password
-from app.auth import create_access_token, get_current_user
-from app.schemas.employee import EmployeeCreate
-from app.schemas.project import ProjectCreate
-from app.schemas.task import TaskCreate
 from app.models.project import Project
 from app.models.task import Task
-from datetime import datetime, date
-from app.schemas.notification import NotificationCreate
-from app.schemas.expense import ExpenseCreate
-from app.schemas.project_handover import ProjectHandoverCreate
 from app.models.attendance import Attendance
-from app.auth import (
-    create_access_token,
-    get_current_user,
-    admin_required
-)
-from datetime import date
-from datetime import datetime
-from zoneinfo import ZoneInfo
-from app.schemas.login import LoginRequest
-from app.database.db import SessionLocal, engine, Base
-from sqlalchemy import Column, Integer, String, Text, DateTime
 from app.models.task_comment import TaskComment
 from app.models.event import Event
 from app.models.event_seen import EventSeen
 from app.models.expense import Expense
 from app.models.project_handover import ProjectHandover
 from app.models.project_report import ProjectReport
-from sqlalchemy import func
-from fastapi.middleware.cors import CORSMiddleware
+
+from app.security import hash_password, verify_password
+
+from app.auth import (
+    create_access_token,
+    get_current_user,
+    admin_required
+)
+
+from app.schemas.employee import EmployeeCreate
+from app.schemas.auth import ProjectCreate
+from app.schemas.task import TaskCreate
+from app.schemas.notification import NotificationCreate
+from app.schemas.expense import ExpenseCreate
+from app.schemas.project_handover import ProjectHandoverCreate
+from app.schemas.login import LoginRequest
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
