@@ -18,3 +18,5 @@ class Attendance(Base):
     work_date = Column(Date, default=date.today)
 
     total_hours = Column(String(50), nullable=True)
+
+    work_report = Column(Text, nullable=True)   

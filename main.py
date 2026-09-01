@@ -394,6 +394,35 @@ def get_attendance_old(
     ).all()
 
 
+@app.put("/attendance-work/{attendance_id}")
+def update_attendance_work(
+    attendance_id: int,
+    work_report: str,
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+
+    attendance = db.query(Attendance).filter(
+        Attendance.id == attendance_id
+    ).first()
+
+    if not attendance:
+        raise HTTPException(
+            status_code=404,
+            detail="Attendance record not found"
+        )
+
+    attendance.work_report = work_report
+
+    db.commit()
+    db.refresh(attendance)
+
+    return {
+        "message": "Daily work updated successfully",
+        "work_report": attendance.work_report
+    }    
+
+
 @app.get("/attendance/{username}")
 def get_attendance(
     username: str,

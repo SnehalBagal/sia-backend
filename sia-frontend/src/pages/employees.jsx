@@ -41,29 +41,46 @@ export default function Employees() {
 
   const createEmployee = async () => {
 
-    try {
+  try {
 
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-     await axios.post(
-  "https://sia-backend-khcp.onrender.com/employees",
-  formData,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+    const dataToSend = {
+      ...formData,
+      joining_date: formData.joining_date || null,
+      leaving_date: formData.leaving_date || null
+    };
+
+    console.log("CREATE EMPLOYEE DATA:", dataToSend);
+
+    await axios.post(
+      "https://sia-backend-khcp.onrender.com/employees",
+      dataToSend,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    alert("Employee Created");
+
+    fetchEmployees();
+
+  } catch (err) {
+
+    console.log(
+      "CREATE EMPLOYEE ERROR:",
+      err.response?.data || err
+    );
+
+    alert(
+      JSON.stringify(
+        err.response?.data || err.message
+      )
+    );
   }
-);
-
-      alert("Employee Created");
-
-      fetchEmployees();
-
-    } catch (err) {
-  console.log("CREATE EMPLOYEE ERROR:", err.response?.data || err);
-  alert(JSON.stringify(err.response?.data || err.message));
-}
-  };
+};
   const makeInactive = async (employeeId) => {
 
   try {

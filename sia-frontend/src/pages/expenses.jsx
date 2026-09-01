@@ -6,6 +6,9 @@ export default function Expenses() {
 
   const [expenses, setExpenses] = useState([]);
 
+  const [selectedEmployee, setSelectedEmployee] = useState("All");
+  const [selectedMonth, setSelectedMonth] = useState("");
+
   const [expenseDate, setExpenseDate] = useState("");
   const [expenseType, setExpenseType] = useState("Travel");
   const [description, setDescription] = useState("");
@@ -17,6 +20,29 @@ export default function Expenses() {
   const username = localStorage.getItem("username");
   
   const role = localStorage.getItem("role");
+
+  // Get unique employee names from expenses
+  const employeeNames = [
+    ...new Set(
+      expenses
+        .map((item) => item.username)
+        .filter((name) => name)
+    )
+  ];
+
+  // Filter expenses by employee and month
+  const filteredExpenses = expenses.filter((item) => {
+
+    const employeeMatch =
+      selectedEmployee === "All" ||
+      item.username === selectedEmployee;
+
+    const monthMatch =
+      selectedMonth === "" ||
+      String(item.expense_date).startsWith(selectedMonth);
+
+    return employeeMatch && monthMatch;
+  });
 
   useEffect(() => {
     fetchExpenses();
@@ -109,11 +135,79 @@ export default function Expenses() {
 
         <h1>Expenses</h1>
 
+        {/* EXPENSE FILTERS */}
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
+            marginTop: "15px",
+            marginBottom: "20px",
+            padding: "12px",
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            background: "#f8f8f8"
+          }}
+        >
+
+          {/* Employee Filter */}
+
+          <select
+            value={selectedEmployee}
+            onChange={(e) => setSelectedEmployee(e.target.value)}
+            style={{
+              padding: "8px"
+            }}
+          >
+
+            <option value="All">
+              All Employees
+            </option>
+
+            {employeeNames.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+
+          </select>
+
+
+          {/* Month Filter */}
+
+          <input
+            type="month"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            style={{
+              padding: "8px"
+            }}
+          />
+
+
+          {/* Clear Filter */}
+
+          <button
+            onClick={() => {
+              setSelectedEmployee("All");
+              setSelectedMonth("");
+            }}
+            style={{
+              padding: "8px 15px",
+              cursor: "pointer"
+            }}
+          >
+            Clear Filter
+          </button>
+
+        </div>
+
         <div style={{
           display:"flex",
           flexWrap:"wrap",
           gap:"10px"
-        }}>
+        }}> 
 
           <input
           type="date"
@@ -233,7 +327,7 @@ export default function Expenses() {
 
           <tbody>
 
-            {expenses.map((item)=>(
+            {filteredExpenses.map((item)=>(
 
               <tr key={item.id}>
 
