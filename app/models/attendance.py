@@ -11,7 +11,7 @@ class Attendance(Base):
 
     username = Column(String(100))
 
-    login_time = Column(DateTime, default=datetime.utcnow)
+    login_time = Column(DateTime, nullable=True)
 
     logout_time = Column(DateTime, nullable=True)
 
@@ -19,4 +19,4 @@ class Attendance(Base):
 
     total_hours = Column(String(50), nullable=True)
 
-    work_report = Column(Text, nullable=True)   
+    work_report = Column(Text, nullable=True)
