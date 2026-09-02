@@ -311,13 +311,15 @@ def login_time(
     username: str,
     db: Session = Depends(get_db)
 ):
-    india_time = datetime.now(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
+    india_time = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).replace(tzinfo=None)
+
     today = india_time.date()
 
-    # Check if today's attendance already exists and user has not logged out
     existing = db.query(Attendance).filter(
         Attendance.username == username,
-        func.date(Attendance.login_time) == today,
+        Attendance.work_date == today,
         Attendance.logout_time == None
     ).first()
 
@@ -329,7 +331,8 @@ def login_time(
 
     attendance = Attendance(
         username=username,
-        login_time=india_time
+        login_time=india_time,
+        work_date=today
     )
 
     db.add(attendance)
@@ -339,7 +342,8 @@ def login_time(
     return {
         "message": "Login time recorded",
         "username": attendance.username,
-        "login_time": attendance.login_time
+        "login_time": attendance.login_time,
+        "work_date": attendance.work_date
     }
 
 @app.put("/logout-time/{username}")
