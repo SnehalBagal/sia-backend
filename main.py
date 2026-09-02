@@ -351,22 +351,19 @@ def logout_time(
     username: str,
     db: Session = Depends(get_db)
 ):
-    today = datetime.now(
-    ZoneInfo("Asia/Kolkata")
-).date()
-
-attendance = db.query(Attendance).filter(
-    Attendance.username == username,
-    Attendance.work_date == today,
-    Attendance.logout_time == None
-).order_by(
-    Attendance.id.desc()
-).first()
+    attendance = db.query(Attendance).filter(
+        Attendance.username == username,
+        Attendance.logout_time == None
+    ).order_by(
+        Attendance.id.desc()
+    ).first()
 
     if not attendance:
         return {"message": "No active login found"}
 
-    india_time = datetime.now(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
+    india_time = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).replace(tzinfo=None)
 
     attendance.logout_time = india_time
 
