@@ -544,6 +544,30 @@ def update_employee(
     return {
         "message": "Employee updated successfully"
     }   
+
+
+@app.get("/employees")
+def get_employees(
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    employees = db.query(Employee).all()
+
+    return [
+        {
+            "id": employee.id,
+            "full_name": employee.full_name,
+            "username": employee.username,
+            "role": employee.role,
+            "department": employee.department,
+            "designation": employee.designation,
+            "status": employee.status
+        }
+        for employee in employees
+    ]
+
+
+
 @app.put("/employees/{employee_id}/inactive")
 def make_employee_inactive(
     employee_id: int,
