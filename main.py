@@ -102,9 +102,9 @@ def login(
 @app.post("/create-project")
 def create_project(
     data: ProjectCreate,
-    current_user: dict = Depends(admin_required)
+    current_user: dict = Depends(admin_required),
+    db: Session = Depends(get_db)
 ):
-    db: Session = SessionLocal()
 
     project = Project(
         project_name=data.project_name,
@@ -132,10 +132,9 @@ def create_project(
 @app.post("/create-task")
 def create_task(
     data: TaskCreate,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
-
-    db: Session = SessionLocal()
 
     task = Task(
         title=data.title,
@@ -159,9 +158,10 @@ def create_task(
     }
 
 @app.get("/employee-tasks/{username}")
-def employee_tasks(username: str):
-
-    db: Session = SessionLocal()
+def employee_tasks(
+    username: str,
+    db: Session = Depends(get_db)
+):
 
     tasks = db.query(Task).filter(
         Task.assigned_to == username
@@ -171,9 +171,11 @@ def employee_tasks(username: str):
 
 
 @app.put("/update-task-status/{task_id}")
-def update_task_status(task_id: int, status: str):
-
-    db: Session = SessionLocal()
+def update_task_status(
+    task_id: int,
+    status: str,
+    db: Session = Depends(get_db)
+):
 
     task = db.query(Task).filter(Task.id == task_id).first()
 
@@ -190,18 +192,18 @@ def update_task_status(task_id: int, status: str):
     }
 
 @app.get("/tasks")
-def get_tasks():
-
-    db: Session = SessionLocal()
+def get_tasks(
+    db: Session = Depends(get_db)
+):
 
     tasks = db.query(Task).all()
 
     return tasks	
 
 @app.get("/kanban-board")
-def kanban_board():
-
-    db: Session = SessionLocal()
+def kanban_board(
+    db: Session = Depends(get_db)
+):
 
     pending = db.query(Task).filter(
         Task.status == "Pending"
