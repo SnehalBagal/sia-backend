@@ -69,7 +69,6 @@ def get_db():
 def home():
     return {"message": "SIA Running"}
 
-
 @app.post("/login")
 def login(
     data: LoginRequest,
@@ -80,12 +79,21 @@ def login(
         Employee.username == data.username
     ).first()
 
+    # Username does not exist
     if not employee:
-        return {"message": "User not found"}
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid username or password"
+        )
 
+    # Password is incorrect
     if not verify_password(data.password, employee.password):
-        return {"message": "Incorrect password"}
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid username or password"
+        )
 
+    # Create JWT only after username AND password are correct
     token = create_access_token({
         "sub": employee.username,
         "role": employee.role
