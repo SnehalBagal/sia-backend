@@ -623,7 +623,10 @@ class Notification(Base):
     message = Column(Text)
     type = Column(String(100))
     is_read = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.now)
+    created_at = Column(
+        DateTime,
+        default=lambda: datetime.now(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
+    )
 
 
 
