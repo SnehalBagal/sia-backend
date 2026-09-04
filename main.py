@@ -995,20 +995,16 @@ def create_expense(
         "message": "Expense added successfully"
     } 
 
-@app.get("/expenses/{username}")
+@app.get("/expenses")
 def get_expenses(
-    username: str,
+    current_user: dict = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
 
-    employee = db.query(Employee).filter(
-        Employee.username == username
-    ).first()
+    username = current_user["username"]
+    role = current_user["role"].lower()
 
-    if not employee:
-        return []
-
-    if employee.role.lower() == "admin":
+    if role == "admin":
         return db.query(Expense).order_by(
             Expense.expense_date.desc()
         ).all()

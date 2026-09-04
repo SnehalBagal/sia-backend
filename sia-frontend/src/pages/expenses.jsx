@@ -50,11 +50,27 @@ export default function Expenses() {
 
   const fetchExpenses = async () => {
 
-    const res = await axios.get(
-      "https://sia-backend-khcp.onrender.com/expenses/" + username
-    );
+    try {
 
-    setExpenses(Array.isArray(res.data) ? res.data : []);
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        "https://sia-backend-khcp.onrender.com/expenses",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      setExpenses(Array.isArray(res.data) ? res.data : []);
+
+    } catch (err) {
+
+      console.log(err);
+      setExpenses([]);
+
+    }
 
   };
 
@@ -151,7 +167,9 @@ export default function Expenses() {
           }}
         >
 
-          {/* Employee Filter */}
+          {/* Employee Filter - Admin Only */}
+
+          {role === "admin" && (
 
           <select
             value={selectedEmployee}
@@ -172,6 +190,8 @@ export default function Expenses() {
             ))}
 
           </select>
+
+        )}    
 
 
           {/* Month Filter */}
@@ -315,7 +335,7 @@ export default function Expenses() {
 
               <th>Status</th>
 
-              {role === "Admin" && (
+              {role === "admin" && (
                 <th>Action</th>
                 )}
 
@@ -350,7 +370,7 @@ export default function Expenses() {
 
                 <td>{item.status}</td>
 
-                {role === "Admin" && (
+                {role === "admin" && (
                     <td>
                         <button
                         onClick={() => updateStatus(item.id, "Approved")}
