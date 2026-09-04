@@ -363,7 +363,9 @@ def logout_time(
     if not attendance:
         return {"message": "No active login found"}
 
-    india_time = datetime.now(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
+    india_time = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).replace(tzinfo=None)
 
     attendance.logout_time = india_time
 
