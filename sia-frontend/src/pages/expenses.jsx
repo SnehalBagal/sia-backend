@@ -191,8 +191,7 @@ export default function Expenses() {
 
           </select>
 
-        )}    
-
+        )}
 
           {/* Month Filter */}
 

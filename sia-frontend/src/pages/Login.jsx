@@ -1,30 +1,37 @@
-
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import API from "../api";
+import { useState } from "react";
 
 export default function Login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  
-
   const login = async () => {
+
+    if (!username.trim() || !password) {
+      alert("Please enter username and password");
+      return;
+    }
 
     try {
 
       const res = await axios.post(
         "https://sia-backend-khcp.onrender.com/login",
         {
-          username,
+          username: username.trim(),
           password
         }
       );
+
+      // Make sure login response contains a token
+      if (!res.data || !res.data.access_token) {
+        alert("Login Failed");
+        return;
+      }
 
       localStorage.setItem("token", res.data.access_token);
       localStorage.setItem("username", res.data.user);
@@ -36,9 +43,6 @@ export default function Login() {
 
       console.log(res.data);
 
-      
-
-
       alert("Login Successful");
 
       navigate("/dashboard");
@@ -47,7 +51,16 @@ export default function Login() {
 
       console.log(err);
 
-      alert("Login Failed");
+      // Clear any old login information
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("role");
+
+      if (err.response) {
+        alert(err.response.data?.detail || "Invalid username or password");
+      } else {
+        alert("Unable to connect to server");
+      }
     }
   };
 
@@ -59,27 +72,48 @@ export default function Login() {
 
       <input
         placeholder="Username"
-        onChange={(e) =>
-          setUsername(e.target.value)
-        }
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
 
       <br /><br />
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setPassword(e.target.value)
-        }
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            login();
-          }
+      {/* Password + Eye Button */}
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "5px"
         }}
-      />
+      >
 
-      <br /><br />
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              login();
+            }
+          }}
+        />
+
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          style={{
+            cursor: "pointer",
+            padding: "5px 8px"
+          }}
+        >
+          {showPassword ? "🙈" : "👁️"}
+        </button>
+
+      </div>
+
+      <br />
 
       <button onClick={login}>
         Login
