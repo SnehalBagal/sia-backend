@@ -694,6 +694,40 @@ def create_notification(
     data: NotificationCreate,
     db: Session = Depends(get_db)
 ):
+    # Send to all ACTIVE employees
+    if data.to_user == "ALL":
+
+        active_employees = db.query(Employee).filter(
+            Employee.status == "Active"
+        ).all()
+
+        if not active_employees:
+            raise HTTPException(
+                status_code=404,
+                detail="No active employees found"
+            )
+
+        notifications = []
+
+        for employee in active_employees:
+            notification = Notification(
+                username=employee.username,
+                sender_name=data.sender_name,
+                message=data.message,
+                type="Notification"
+            )
+
+            notifications.append(notification)
+
+        db.add_all(notifications)
+        db.commit()
+
+        return {
+            "message": "Notification sent to all active employees",
+            "count": len(notifications)
+        }
+
+    # Send to one employee
     notification = Notification(
         username=data.to_user,
         sender_name=data.sender_name,
@@ -705,7 +739,9 @@ def create_notification(
     db.commit()
     db.refresh(notification)
 
-    return {"message": "Notification sent"}
+    return {
+        "message": "Notification sent"
+    }
 
 
 @app.get("/notifications/{username}")
