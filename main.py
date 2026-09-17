@@ -652,6 +652,40 @@ class Notification(Base):
         default=lambda: datetime.now(ZoneInfo("Asia/Kolkata")).replace(tzinfo=None)
     )
 
+@app.put("/projects/{project_id}")
+def update_project(
+    project_id: int,
+    data: ProjectCreate,
+    current_user: dict = Depends(admin_required),
+    db: Session = Depends(get_db)
+):
+    project = db.query(Project).filter(
+        Project.id == project_id
+    ).first()
+
+    if not project:
+        raise HTTPException(
+            status_code=404,
+            detail="Project not found"
+        )
+
+    project.project_name = data.project_name
+    project.description = data.description
+    project.assignee = data.assignee
+    project.reporter = data.reporter
+    project.start_date = data.start_date
+    project.due_date = data.due_date
+    project.status = data.status
+    project.priority = data.priority
+
+    db.commit()
+    db.refresh(project)
+
+    return {
+        "message": "Project updated successfully",
+        "project": project.project_name
+    }    
+
 
 
 

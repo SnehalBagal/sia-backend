@@ -15,6 +15,8 @@ export default function Projects() {
   const [dueDate, setDueDate] = useState("");
   const [status, setStatus] = useState("Discussion");
   const [priority, setPriority] = useState("Medium");
+  const [editingProjectId, setEditingProjectId] = useState("");
+  const [editing, setEditing] = useState(false);
   const navigate = useNavigate();
 
 
@@ -56,6 +58,80 @@ export default function Projects() {
 
     alert("Project Created");
     fetchProjects();
+  };
+
+    const selectProjectForEdit = (projectId) => {
+    const project = projects.find(
+      (p) => p.id === Number(projectId)
+    );
+
+    if (!project) {
+      setEditingProjectId("");
+      setEditing(false);
+      return;
+    }
+
+    setEditingProjectId(project.id);
+    setProjectName(project.project_name || "");
+    setAssignee(project.assignee || "");
+    setReporter(project.reporter || "");
+    setStartDate(project.start_date || "");
+    setDueDate(project.due_date || "");
+    setStatus(project.status || "Discussion");
+    setPriority(project.priority || "Medium");
+
+    setEditing(true);
+  };
+
+
+  const updateProject = async () => {
+    if (!editingProjectId) {
+      alert("Please select a project");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    try {
+      await axios.put(
+        `https://sia-backend-khcp.onrender.com/projects/${editingProjectId}`,
+        {
+          project_name: projectName,
+          description: "",
+          assignee,
+          reporter,
+          start_date: startDate || null,
+          due_date: dueDate || null,
+          status,
+          priority,
+          created_by: localStorage.getItem("username")
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      alert("Project Updated");
+
+      setEditingProjectId("");
+      setEditing(false);
+
+      setProjectName("");
+      setAssignee("");
+      setReporter("");
+      setStartDate("");
+      setDueDate("");
+      setStatus("Discussion");
+      setPriority("Medium");
+
+      fetchProjects();
+
+    } catch (err) {
+      console.log(err);
+      alert("Failed to update project");
+    }
   };
 
   const deleteProject = async (projectId) => {
@@ -116,28 +192,198 @@ export default function Projects() {
       <div style={{ marginLeft: "240px", padding: "40px" }}>
         <h1>Projects</h1>
 
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          <input placeholder="Project Name / Code" onChange={(e) => setProjectName(e.target.value)} />
-          <input placeholder="Assignee" onChange={(e) => setAssignee(e.target.value)} />
-          <input placeholder="Reporter" onChange={(e) => setReporter(e.target.value)} />
+        {/* ================= EDIT PROJECT ================= */}
 
-          <input type="date" onChange={(e) => setStartDate(e.target.value)} />
-          <input type="date" onChange={(e) => setDueDate(e.target.value)} />
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "20px",
+            border: "1px solid #555",
+            borderRadius: "10px"
+          }}
+        >
+          <h2>Edit Project</h2>
 
-          <select onChange={(e) => setStatus(e.target.value)}>
-            <option>Discussion</option>
-            <option>Ongoing</option>
-            <option>Done</option>
-            <option>Hold</option>
+          <select
+            value={editingProjectId}
+            onChange={(e) => selectProjectForEdit(e.target.value)}
+            style={{
+              padding: "8px",
+              minWidth: "250px",
+              marginRight: "10px"
+            }}
+          >
+            <option value="">Select Project</option>
+
+            {projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.project_name}
+              </option>
+            ))}
           </select>
 
-          <select onChange={(e) => setPriority(e.target.value)}>
-            <option>High</option>
-            <option>Medium</option>
-            <option>Low</option>
-          </select>
+          {editing && (
+            <div
+              style={{
+                marginTop: "20px",
+                display: "flex",
+                gap: "10px",
+                flexWrap: "wrap"
+              }}
+            >
+              <input
+                placeholder="Project Name / Code"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+              />
 
-          <button onClick={createProject}>Create Project</button>
+              <input
+                placeholder="Assignee"
+                value={assignee}
+                onChange={(e) => setAssignee(e.target.value)}
+              />
+
+              <input
+                placeholder="Reporter"
+                value={reporter}
+                onChange={(e) => setReporter(e.target.value)}
+              />
+
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+
+              <input
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option>Discussion</option>
+                <option>Ongoing</option>
+                <option>Done</option>
+                <option>Hold</option>
+              </select>
+
+            <select
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+              >
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+
+              <button
+                onClick={updateProject}
+                style={{
+                background: "#007bff",
+                color: "white",
+                border: "none",
+                padding: "8px 18px",
+                borderRadius: "5px",
+                cursor: "pointer"
+                }}
+              >
+                Update Project
+              </button>
+
+              <button
+                onClick={() => {
+                  setEditingProjectId("");
+                  setEditing(false);
+                }}
+                  style={{
+                  padding: "8px 18px",
+                  borderRadius: "5px",
+                  cursor: "pointer"
+                }}
+                >
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
+
+
+        {/* ================= CREATE PROJECT ================= */}
+
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "20px",
+            border: "1px solid #555",
+            borderRadius: "10px"
+          }}
+        >
+          <h2>Create Project</h2>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap"
+            }}
+          >
+            <input
+              placeholder="Project Name / Code"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+            />
+
+            <input
+              placeholder="Assignee"
+              value={assignee}
+              onChange={(e) => setAssignee(e.target.value)}
+            />
+
+            <input
+              placeholder="Reporter"
+              value={reporter}
+              onChange={(e) => setReporter(e.target.value)}
+            />
+
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option>Discussion</option>
+              <option>Ongoing</option>
+              <option>Done</option>
+              <option>Hold</option>
+            </select>
+
+            <select
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+            >
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+            </select>
+
+            <button onClick={createProject}>
+              Create Project
+            </button>
+          </div>
         </div>
 
         <div style={tableBox}>
